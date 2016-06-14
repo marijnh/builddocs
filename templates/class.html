@@ -1,0 +1,37 @@
+<<in item>>
+<<do var members = membersIn(item), methods = methodsIn(item)>>
+
+<h3 id="<<t anchor(item)>>"><a href="#<<t anchor(item)>>">
+  <span class=kind><<t item.type>></span> <<t item.id>></a>
+</h3>
+
+<<if item.extends>><p>Extends <code><<type item.extends>></code>.</p><</if>>
+
+<<markdown item.description>>
+
+<<if item.constructor>>
+  <h4 id="<<t anchor(item.constructor)>>"><a href="#<<t anchor(item.constructor)>>">Constructor</a></h4>
+
+  <dl><<define item.constructor>></dl>
+<</if>>
+
+<<if members.length>>
+  <h4 id="<<t anchor(item)>>_members">Properties</h4>
+  <dl>
+    <<for member members>><<define member>><</for>>
+  </dl>
+<</if>>
+
+<<if methods.length>>
+  <h4 id="<<t anchor(item)>>_methods">Methods</h4>
+  <dl>
+    <<for method item.methods>><<define method>><</for>>
+  </dl>
+<</if>>
+
+<<if item.staticProperties>>
+  <h4 id="<<t anchor(item)>>_static">Static properties</h4>
+  <dl>
+    <<for _, prop in item.staticProperties>><<define prop>><</for>>
+  </dl>
+<</if>>

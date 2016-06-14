@@ -1,0 +1,32 @@
+{
+  "name": "builddocs",
+  "version": "0.1.0",
+  "description": "Build documentation files from getdocs-commented source code",
+  "main": "src/builddocs.js",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/marijnh/builddocs.git"
+  },
+  "keywords": [
+    "documentation",
+    "comment",
+    "getdocs"
+  ],
+  "maintainers": [
+    {
+      "name": "Marijn Haverbeke",
+      "email": "marijnh@gmail.com",
+      "web": "http://marijnhaverbeke.nl"
+    }
+  ],
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/marijnh/builddocs/issues"
+  },
+  "dependencies": {
+    "getdocs": "^1.0.0",
+    "glob": "^7.0.3",
+    "markdown-it": "^6.0.5",
+    "mold-template": "^2.0.0"
+  }
+}

@@ -1,0 +1,33 @@
+<<in item>>
+
+<dt id="<<t anchor(item)>>">
+  <<if item.type == "Function">>
+    <code><<if /\.constructor$/.test(item.id)>>new <</if>><strong><a href="#<<t anchor(item)>>"><<t name>></a></strong><<fntype item>></code>
+  <<else>>
+    <code><strong><a href="#<<t anchor(item)>>"><<t name>></a></strong><<if item.type>>: <<type item>><</if>></code>
+  <</if>>
+</dt>
+
+<dd>
+  <<markdown item.description>>
+  <<do inList = false>>
+  <<for _, prop in item.properties || {}>>
+    <<if prop.description>>
+      <<if !inList>><dl><<do inList = true>><</if>>
+      <<define prop>>
+    <</if>>
+  <</for>>
+  <<for param item.params || []>>
+    <<if param.description>>
+      <<if !inList>><dl><<do inList = true>><</if>>
+      <dt><code><strong>param.name</strong></code></dt>
+      <dd><<markdown param.description>></dd>
+    <</if>>
+  <</for>>
+  <<if item.returns && item.returns.description>>
+    <<if !inList>><dl><<do inList = true>><</if>>
+    <dt><code><strong>returns</strong></code></dt>
+    <dd><<markdown param.description>></dd>
+  <</if>>
+  <<if inList>></dl><</if>>
+</dd>
