@@ -84,11 +84,16 @@ Context.prototype.moldEnv = function() {
     maybeLinkType: function(name) {
       if (name in self.data.all) return "#" + self.config.name + "." + name
       if (name.charAt(0) == '"') return false
-      var imports = self.config.imports
+      var imports = self.config.imports, qualified = self.config.qualifiedImports
       if (imports) for (var i = 0; i < imports.length; i++) {
         var set = imports[i]
         if (Object.prototype.hasOwnProperty.call(set, name))
           return set[name]
+      }
+      if (qualified) for (var prefix in qualified) if (name.indexOf(prefix + ".") == 0) {
+        var inner = name.slice(prefix.length + 1)
+        if (Object.prototype.hasOwnProperty.call(qualified[prefix], inner))
+          return qualified[prefix][inner]
       }
       if (builtins.hasOwnProperty(name)) return builtins[name]
     },
@@ -102,7 +107,7 @@ Context.prototype.moldEnv = function() {
       return self.config.name + "." + item.id
     },
     itemName: function(item) {
-      return /[^\.]+$/.exec(item.id)[0]
+      return /[^\.^]+$/.exec(item.id)[0]
     }
   }
   if (this.config.env) for (var prop in this.config.env) env[prop] = this.config.env[prop]
