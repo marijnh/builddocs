@@ -37,7 +37,7 @@ function getExtra(text) {
 
 function gatherAll(obj, target) {
   if (obj.id) target[obj.id] = obj
-  if (obj.constructor) target[obj.constructor.id] = obj.constructor
+  if (Object.prototype.hasOwnProperty.call(obj, "constructor")) gatherAll(obj.constructor, target)
   if (obj.properties) for (var prop in obj.properties) gatherAll(obj.properties[prop], target)
   if (obj.staticProperties) for (var prop in obj.staticProperties) gatherAll(obj.staticProperties[prop], target)
   return target

@@ -2,7 +2,7 @@
 <<do var members = membersIn(item), methods = methodsIn(item)>>
 
 <h3 id="<<t anchor(item)>>"><a href="#<<t anchor(item)>>">
-  <span class=kind><<t item.type>></span> <<t item.id>></a>
+  <span class=kind><<t item.type>></span> <<t itemName(item)>></a>
 </h3>
 
 <<if item.extends>><p>Extends <code><<type item.extends>></code>.</p><</if>>
@@ -15,17 +15,17 @@
   <dl><<define item.constructor>></dl>
 <</if>>
 
-<<if members.length>>
+<<if members>>
   <h4 id="<<t anchor(item)>>_members">Properties</h4>
   <dl>
-    <<for member members>><<define member>><</for>>
+    <<for _, member in members>><<define member>><</for>>
   </dl>
 <</if>>
 
-<<if methods.length>>
+<<if methods>>
   <h4 id="<<t anchor(item)>>_methods">Methods</h4>
   <dl>
-    <<for method item.methods>><<define method>><</for>>
+    <<for _, method in methods>><<define method>><</for>>
   </dl>
 <</if>>
 

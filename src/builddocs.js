@@ -1,45 +1,22 @@
 var fs = require("fs")
 var Mold = require("mold-template")
-var markdown = require("markdown-it")
+var markdown = (require("markdown-it")({html: true})).use(require("markdown-it-deflist"))
 
 var read = require("./read").read
+var builtins = require("./builtins")
 
-var knownTypes = {
-  string: "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String",
-  bool: "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean",
-  number: "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number",
-  Iterator: "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Iteration_protocols",
-  Array: "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array",
-  Object: "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object",
-  RegExp: "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/RegExp",
-  DOMNode: "https://developer.mozilla.org/en-US/docs/Web/API/Node",
-  DOMFragment: "https://developer.mozilla.org/en-US/docs/Web/API/DocumentFragment",
-  DOMDocument: "https://developer.mozilla.org/en-US/docs/Web/API/Document",
-  DOMEvent: "https://developer.mozilla.org/en-US/docs/Web/API/Event",
-  KeyboardEvent: "https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent",
-  MouseEvent: "https://developer.mozilla.org/en-US/docs/Web/API/MouseEvent",
-  Error: "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Error",
-  any: false,
-  union: false,
-  constructor: false,
-  T: false
-}
+exports.browserImports = require("./browser")
 
-exports.build = function(config, readData) {
-  if (!readData) readData = read(config)
+exports.build = function(config, data) {
+  if (!data) data = read(config)
 
-  var cx = new Context(config, readData)
+  var cx = new Context(config, data)
   return cx.mold.defs.module()
 }
 
 function Context(config, data) {
   this.config = config
   this.data = data
-
-  this.knownTypes = Object.create(null)
-  for (var prop in knownTypes) this.knownTypes[prop] = knownTypes[prop]
-  if (config.knownTypes) for (var prop in config.knownTypes) this.knownTypes[prop] = config.knownTypes[prop]
-
   this.mold = this.loadTemplates()
 }
 
@@ -54,10 +31,10 @@ Context.prototype.loadTemplates = function() {
   }
 
   function templateDir(dir) {
-    fs.readdirSync().forEach(function(filename) {
+    fs.readdirSync(dir).forEach(function(filename) {
       var match = /^(.*?)\.html$/.exec(filename)
       if (match && !(match[1] in mold.defs))
-        mold.bake(match[1], fs.readFileSync(dir + match[1] + ".html", "utf8").trim())
+        mold.bake(match[1], fs.readFileSync(dir + "/" + match[1] + ".html", "utf8").trim())
     })
   }
 
@@ -78,7 +55,7 @@ Context.prototype.moldEnv = function() {
         if (items[prop].type == "class" || items[prop].type == "interface") classes.push(items[prop])
       return classes
     },
-    functionIn: function(items) {
+    functionsIn: function(items) {
       var functions = []
       for (var prop in items)
         if (items[prop].type == "Function") functions.push(items[prop])
@@ -104,21 +81,28 @@ Context.prototype.moldEnv = function() {
         if (cls.properties[prop].type == "Function") methods[prop] = cls.properties[prop]
       return notEmpty(methods)
     },
-    maybeLinkTo: function(name) {
-      if (name in self.data.all) return "#" + name
-      if (name.charAt(0) == '"') return null
-      // FIXME sibling modules
-      var known = self.knownTypes[name]
-      if (known === false) return null
-      if (known) return known
+    maybeLinkType: function(name) {
+      if (name in self.data.all) return "#" + self.config.name + "." + name
+      if (name.charAt(0) == '"') return false
+      var imports = self.config.imports
+      if (imports) for (var i = 0; i < imports.length; i++) {
+        var set = imports[i]
+        if (Object.prototype.hasOwnProperty.call(set, name))
+          return set[name]
+      }
+      if (builtins.hasOwnProperty(name)) return builtins[name]
     },
-    linkTo: function(name) {
-      var link = env.linkTo(name)
-      if (!link) throw new Error("Unknown link target: " + name)
+    linkType: function(type) {
+      var link = env.maybeLinkType(type.type)
+      if (!link && link !== false && !self.config.allowUnresolvedTypes)
+        throw new Error("Unknown type '" + type.type + "' at " + type.loc.file + ":" + type.loc.line)
       return link
     },
     anchor: function(item) {
       return self.config.name + "." + item.id
+    },
+    itemName: function(item) {
+      return /[^\.]+$/.exec(item.id)[0]
     }
   }
   if (this.config.env) for (var prop in this.config.env) env[prop] = this.config.env[prop]
