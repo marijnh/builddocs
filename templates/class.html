@@ -8,22 +8,18 @@
 
 <<markdown item.description>>
 
-<<if item.constructor>>
-  <h5 id="<<t anchor(item.constructor)>>"><a href="#<<t anchor(item.constructor)>>">Constructor</a></h5>
+<dl>
 
-  <dl><<define item.constructor>></dl>
+<<if item.constructor>>
+  <<define {item: item.constructor, name: itemName(item)}>>
 <</if>>
 
 <<if item.properties>>
-  <h5 id="<<t anchor(item)>>_props">Properties</h5>
-  <dl>
-    <<for _, prop in item.properties>><<define prop>><</for>>
-  </dl>
+  <<for name, prop in item.properties>><<define {item: prop, name: name}>><</for>>
 <</if>>
 
 <<if item.staticProperties>>
-  <h5 id="<<t anchor(item)>>_static">Static properties</h5>
-  <dl>
-    <<for _, prop in item.staticProperties>><<define prop>><</for>>
-  </dl>
+  <<for name, prop in item.staticProperties>><<define {item: prop, name: name, static: true}>><</for>>
 <</if>>
+
+</dl>

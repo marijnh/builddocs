@@ -1,31 +1,31 @@
-<<in item>>
+<<in {item, name, static}>>
 
 <dt id="<<t anchor(item)>>">
   <<if item.type == "Function">>
-    <code><<if /\.constructor$/.test(item.id)>>new <</if>><strong><a href="#<<t anchor(item)>>"><<t itemName(item)>></a></strong><<fntype item>></code>
+    <code><<if static>>static <</if>><<if /\.constructor$/.test(item.id)>>new <</if>><strong><a href="#<<t anchor(item)>>"><<t name>></a></strong><<fntype item>></code>
   <<else>>
-    <code><strong><a href="#<<t anchor(item)>>"><<t itemName(item)>></a></strong><<if item.type>>: <<type item>><</if>></code>
+    <code><<if static>>static <</if>><strong><a href="#<<t anchor(item)>>"><<t name>></a></strong><<if item.type>>: <<type item>><</if>></code>
   <</if>>
 </dt>
 
 <dd>
   <<markdown item.description>>
   <<do inList = false>>
-  <<for _, prop in item.properties || {}>>
+  <<for name, prop in item.properties || {}>>
     <<if hasDescription(prop)>>
       <<if !inList>><dl><<do inList = true>><</if>>
-      <<define prop>>
+      <<define {item: prop, name: name}>>
     <</if>>
   <</for>>
   <<for param item.params || []>>
     <<if hasDescription(param)>>
       <<if !inList>><dl><<do inList = true>><</if>>
-      <<define param>>
+      <<define {item: param, name: param.name}>>
     <</if>>
   <</for>>
   <<if item.returns && hasDescription(item.returns)>>
     <<if !inList>><dl><<do inList = true>><</if>>
-    <<define item.returns>>
+    <<define {item: item.returns, name: "returns"}>>
   <</if>>
   <<if inList>></dl><</if>>
 </dd>

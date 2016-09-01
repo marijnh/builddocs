@@ -98,6 +98,6 @@ module.exports = {
   DOMParser: "https://developer.mozilla.org/en/docs/DOM/DOMParser",
   FormData: "https://developer.mozilla.org/en-US/docs/Web/API/FormData",
   Selection: "https://developer.mozilla.org/en/docs/DOM/Selection",
-  CanvasRenderingContext2D: "FIXME",
+  CanvasRenderingContext2D: "https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D",
   Image: "https://developer.mozilla.org/en-US/docs/Web/API/HTMLImageElement/Image"
 }

@@ -11,24 +11,13 @@ exports.build = function(config, data) {
   if (!data) data = read(config)
 
   var cx = new Context(config, data)
-  return {text: cx.mold.defs.module(),
-          headings: cx.headings}
+  return cx.mold.defs.module()
 }
 
 function Context(config, data) {
   this.config = config
   this.prefix = config.anchorPrefix == null ? config.name + "." : config.anchorPrefix
   this.data = data
-  this.headings = []
-  var self = this
-  this.pieces = data.pieces.map(function(item) {
-    if (!item.content) return item
-    return {content: item.content.replace(/(^|\n)\s*#+\s*(.*)/, function(_, before, head) {
-      var id = self.prefix + head.replace(/\W+/g, "_")
-      self.headings.push({name: head, id: id})
-      return before + "### <a href=\"#" + id + "\" id=\"" + id + "\">" + head + "</a>"
-    })}
-  })
   this.mold = this.loadTemplates()
 }
 
@@ -81,7 +70,7 @@ Context.prototype.moldEnv = function() {
     prefix: this.prefix,
     moduleText: this.data.extraText,
     items: this.data.items,
-    pieces: this.pieces,
+    pieces: this.data.pieces,
     linkType: function(type) {
       var link = maybeLinkType(self, type.type)
       if (!link && link !== false && !self.config.allowUnresolvedTypes)

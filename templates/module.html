@@ -6,7 +6,6 @@
   <<elif piece.type == "class" || piece.type == "interface">>
     <<class piece>>
   <<else>>
-    FIXME header?
-    <<define piece>>
+    <<define {item: piece, name: itemName(piece)}>>
   <</if>>
 <</for>>
