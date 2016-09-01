@@ -12,22 +12,20 @@
   <<markdown item.description>>
   <<do inList = false>>
   <<for _, prop in item.properties || {}>>
-    <<if prop.description>>
+    <<if hasDescription(prop)>>
       <<if !inList>><dl><<do inList = true>><</if>>
       <<define prop>>
     <</if>>
   <</for>>
   <<for param item.params || []>>
-    <<if param.description>>
+    <<if hasDescription(param)>>
       <<if !inList>><dl><<do inList = true>><</if>>
-      <dt><code><strong>param.name</strong></code></dt>
-      <dd><<markdown param.description>></dd>
+      <<define param>>
     <</if>>
   <</for>>
-  <<if item.returns && item.returns.description>>
+  <<if item.returns && hasDescription(item.returns)>>
     <<if !inList>><dl><<do inList = true>><</if>>
-    <dt><code><strong>returns</strong></code></dt>
-    <dd><<markdown param.description>></dd>
+    <<define item.returns>>
   <</if>>
   <<if inList>></dl><</if>>
 </dd>

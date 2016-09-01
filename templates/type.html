@@ -1,6 +1,6 @@
 <<do
   var undocumentedProps = false
-  if ($in.properties) for (var n in $in.properties) if (!$in.properties[n].description) undocumentedProps = true
+  if ($in.properties) for (var n in $in.properties) if (!hasDescription($in.properties[n])) undocumentedProps = true
 >>
 
 <<if $in.optional>>?<</if>>
@@ -10,7 +10,7 @@
   [<<for elt $in.typeParams || []>><<if $i>>, <</if>><<type elt>><</for>>]
 <<elif undocumentedProps>>
   {<<for name, prop in $in.properties>>
-    <<if !prop.description>><<if $i>>, <</if>><<t name>>: <<type prop>><</if>>
+    <<if !hasDescription(prop)>><<if $i>>, <</if>><<t name>>: <<type prop>><</if>>
    <</for>>}
 <<else>>
   <<do var found = linkType($in)>>

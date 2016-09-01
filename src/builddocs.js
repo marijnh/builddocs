@@ -2,7 +2,7 @@ var fs = require("fs")
 var Mold = require("mold-template")
 var markdown = (require("markdown-it")({html: true})).use(require("markdown-it-deflist"))
 
-var read = require("./read").read
+var read = exports.read = require("./read").read
 var builtins = require("./builtins")
 
 exports.browserImports = require("./browser")
@@ -65,7 +65,7 @@ Context.prototype.moldEnv = function() {
       var variables = []
       for (var prop in items) {
         var type = items[prop].type
-        if (type != "class" || type == "interface" || type == "Function") variables.push(items[prop])
+        if (type != "class" && type != "interface" && type != "Function") variables.push(items[prop])
       }
       return variables
     },
@@ -108,6 +108,15 @@ Context.prototype.moldEnv = function() {
     },
     itemName: function(item) {
       return /[^\.^]+$/.exec(item.id)[0]
+    },
+    hasDescription: function(type) {
+      if (type.description) return true
+      if (type.properties) for (let prop in type.properties)
+        if (env.hasDescription(type.properties[prop])) return true
+      if (type.params) for (let i = 0; i < type.params.length; i++)
+        if (env.hasDescription(type.params[i])) return true
+      if (type.returns && type.returns.description) return true
+      return false
     }
   }
   if (this.config.env) for (var prop in this.config.env) env[prop] = this.config.env[prop]
