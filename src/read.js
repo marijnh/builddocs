@@ -3,16 +3,45 @@ var glob = require("glob")
 var getdocs = require("getdocs")
 
 exports.read = function(config) {
-  var items = Object.create(null), text = ""
-  filesFor(config).forEach(function(filename) {
+  var items = Object.create(null), content = [], last
+  var files = filesFor(config)
+  files.forEach(function(filename) {
+    last = null
     var file = fs.readFileSync(filename, "utf8")
-    getdocs.gather(file, filename, items)
-    var extraText = getExtra(file)
-    if (extraText) text = (text ? text + "\n\n" : "") + extraText
+    getdocs.gather(file, {
+      filename: filename,
+      items: items,
+      onComment: function(block, text, _start, _end, startPos) {
+        var m
+        if (last && !block && startPos.line == last.loc.line + 1)
+          last.text += "\n" + text
+        else if (m = /^\s*!!(?:$|\s)/.exec(text))
+          content.push(last = {loc: {line: startPos.line, file: filename}, text: text.slice(m[0].length)})
+      }
+    })
   })
-  return {extraText: text,
-          items: items,
-          all: gatherAll({properties: items}, Object.create(null))}
+
+  function isBefore(element, item) {
+    var fDiff = files.indexOf(element.loc.file) - files.indexOf(item.loc.file)
+    if (fDiff < 0) return true
+    return fDiff == 0 && element.loc.line < item.loc.line
+  }
+
+  let pieces = [], i = 0
+  for (let name in items) {
+    let item = items[name]
+    while (i < content.length && isBefore(content[i], item))
+      pieces.push({content: getdocs.stripComment(content[i++].text)})
+    pieces.push(item)
+  }
+  while (i < content.length)
+    pieces.push({content: getdocs.stripComment(content[i++].text)})
+
+  return {
+    items: items,
+    pieces: pieces,
+    all: gatherAll({properties: items}, Object.create(null))
+  }
 }
 
 function filesFor(config) {
@@ -28,11 +57,6 @@ function filesFor(config) {
     throw new Error("Order pattern " + pat + " does not match a file")
   })
   return ordered.concat(files)
-}
-
-function getExtra(text) {
-  var match = /(?:\n|^)\s*\/\/(\s*)!!(.*(?:\n *\/\/.*)*)/.exec(text)
-  if (match) return match[2].replace(/\n\s*\/\/ ?/g, "\n")
 }
 
 function gatherAll(obj, target) {

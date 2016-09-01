@@ -11,12 +11,24 @@ exports.build = function(config, data) {
   if (!data) data = read(config)
 
   var cx = new Context(config, data)
-  return cx.mold.defs.module()
+  return {text: cx.mold.defs.module(),
+          headings: cx.headings}
 }
 
 function Context(config, data) {
   this.config = config
+  this.prefix = config.anchorPrefix == null ? config.name + "." : config.anchorPrefix
   this.data = data
+  this.headings = []
+  var self = this
+  this.pieces = data.pieces.map(function(item) {
+    if (!item.content) return item
+    return {content: item.content.replace(/(^|\n)\s*#+\s*(.*)/, function(_, before, head) {
+      var id = self.prefix + head.replace(/\W+/g, "_")
+      self.headings.push({name: head, id: id})
+      return before + "### <a href=\"#" + id + "\" id=\"" + id + "\">" + head + "</a>"
+    })}
+  })
   this.mold = this.loadTemplates()
 }
 
@@ -44,69 +56,40 @@ Context.prototype.loadTemplates = function() {
   return mold
 }
 
+function maybeLinkType(self, name) {
+  if (name in self.data.all) return "#" + self.prefix + name
+  if (name.charAt(0) == '"') return false
+  var imports = self.config.imports, qualified = self.config.qualifiedImports
+  if (imports) for (var i = 0; i < imports.length; i++) {
+    var set = imports[i]
+    if (Object.prototype.hasOwnProperty.call(set, name))
+      return set[name]
+  }
+  if (qualified) for (var prefix in qualified) if (name.indexOf(prefix + ".") == 0) {
+    var inner = name.slice(prefix.length + 1)
+    if (Object.prototype.hasOwnProperty.call(qualified[prefix], inner))
+      return qualified[prefix][inner]
+  }
+  if (builtins.hasOwnProperty(name)) return builtins[name]
+}
+
 Context.prototype.moldEnv = function() {
-  var prefix = this.config.anchorPrefix == null ? this.config.name + "." : this.config.anchorPrefix
+  var contentPos = 0
+
   var self = this, env = {
     moduleName: this.config.name,
-    prefix: prefix,
+    prefix: this.prefix,
     moduleText: this.data.extraText,
     items: this.data.items,
-    classesIn: function(items) {
-      var classes = []
-      for (var prop in items)
-        if (items[prop].type == "class" || items[prop].type == "interface") classes.push(items[prop])
-      return classes
-    },
-    functionsIn: function(items) {
-      var functions = []
-      for (var prop in items)
-        if (items[prop].type == "Function") functions.push(items[prop])
-      return functions
-    },
-    variablesIn: function(items) {
-      var variables = []
-      for (var prop in items) {
-        var type = items[prop].type
-        if (type != "class" && type != "interface" && type != "Function") variables.push(items[prop])
-      }
-      return variables
-    },
-    membersIn: function(cls) {
-      var members = Object.create(null)
-      if (cls.properties) for (var prop in cls.properties)
-        if (cls.properties[prop].type != "Function") members[prop] = cls.properties[prop]
-      return notEmpty(members)
-    },
-    methodsIn: function(cls) {
-      var methods = Object.create(null)
-      if (cls.properties) for (var prop in cls.properties)
-        if (cls.properties[prop].type == "Function") methods[prop] = cls.properties[prop]
-      return notEmpty(methods)
-    },
-    maybeLinkType: function(name) {
-      if (name in self.data.all) return "#" + prefix + name
-      if (name.charAt(0) == '"') return false
-      var imports = self.config.imports, qualified = self.config.qualifiedImports
-      if (imports) for (var i = 0; i < imports.length; i++) {
-        var set = imports[i]
-        if (Object.prototype.hasOwnProperty.call(set, name))
-          return set[name]
-      }
-      if (qualified) for (var pref in qualified) if (name.indexOf(pref + ".") == 0) {
-        var inner = name.slice(pref.length + 1)
-        if (Object.prototype.hasOwnProperty.call(qualified[pref], inner))
-          return qualified[pref][inner]
-      }
-      if (builtins.hasOwnProperty(name)) return builtins[name]
-    },
+    pieces: this.pieces,
     linkType: function(type) {
-      var link = env.maybeLinkType(type.type)
+      var link = maybeLinkType(self, type.type)
       if (!link && link !== false && !self.config.allowUnresolvedTypes)
         throw new Error("Unknown type '" + type.type + "' at " + type.loc.file + ":" + type.loc.line)
       return link
     },
     anchor: function(item) {
-      return prefix + item.id
+      return self.prefix + item.id
     },
     itemName: function(item) {
       return /[^\.^]+$/.exec(item.id)[0]
