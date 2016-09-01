@@ -1,6 +1,6 @@
 <<do var classes = classesIn(items), functions = functionsIn(items), variables = variablesIn(items) >>
 
-<h2 id="<<t module>>"><a href="#<<t module>>"><span class=kind>module</span> <<t module>></a></h2>
+<h2 id="<<t prefix + "_module">>"><a href="#<<t prefix + "_module">>"><span class=kind>module</span> <<t moduleName>></a></h2>
 
 <<if moduleText>><<markdown moduleText>><</if>>
 
@@ -9,14 +9,14 @@
 <</if>>
 
 <<if functions.length>>
-  <h3 id="<<t module>>_functions">Functions</h3>
+  <h3 id="<<t prefix>>_functions">Functions</h3>
   <dl>
     <<for item functions>><<define item>><</for>>
   </dl>
 <</if>>
 
 <<if variables.length>>
-  <h3 id="<<t module>>_consts">Constants</h3>
+  <h3 id="<<t prefix>>_consts">Constants</h3>
   <dl>
     <<for item variables>><<define item>><</for>>
   </dl>

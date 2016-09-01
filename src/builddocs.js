@@ -45,8 +45,10 @@ Context.prototype.loadTemplates = function() {
 }
 
 Context.prototype.moldEnv = function() {
+  var prefix = this.config.anchorPrefix == null ? this.config.name + "." : this.config.anchorPrefix
   var self = this, env = {
-    module: this.config.name,
+    moduleName: this.config.name,
+    prefix: prefix,
     moduleText: this.data.extraText,
     items: this.data.items,
     classesIn: function(items) {
@@ -82,7 +84,7 @@ Context.prototype.moldEnv = function() {
       return notEmpty(methods)
     },
     maybeLinkType: function(name) {
-      if (name in self.data.all) return "#" + self.config.name + "." + name
+      if (name in self.data.all) return "#" + prefix + name
       if (name.charAt(0) == '"') return false
       var imports = self.config.imports, qualified = self.config.qualifiedImports
       if (imports) for (var i = 0; i < imports.length; i++) {
@@ -90,10 +92,10 @@ Context.prototype.moldEnv = function() {
         if (Object.prototype.hasOwnProperty.call(set, name))
           return set[name]
       }
-      if (qualified) for (var prefix in qualified) if (name.indexOf(prefix + ".") == 0) {
-        var inner = name.slice(prefix.length + 1)
-        if (Object.prototype.hasOwnProperty.call(qualified[prefix], inner))
-          return qualified[prefix][inner]
+      if (qualified) for (var pref in qualified) if (name.indexOf(pref + ".") == 0) {
+        var inner = name.slice(pref.length + 1)
+        if (Object.prototype.hasOwnProperty.call(qualified[pref], inner))
+          return qualified[pref][inner]
       }
       if (builtins.hasOwnProperty(name)) return builtins[name]
     },
@@ -104,7 +106,7 @@ Context.prototype.moldEnv = function() {
       return link
     },
     anchor: function(item) {
-      return self.config.name + "." + item.id
+      return prefix + item.id
     },
     itemName: function(item) {
       return /[^\.^]+$/.exec(item.id)[0]
