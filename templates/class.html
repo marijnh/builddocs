@@ -1,7 +1,7 @@
-<<in item>>
+<<in {item, name}>>
 
-<h4 id="<<t anchor(item)>>"><a href="#<<t anchor(item)>>">
-  <span class=kind><<t item.type>></span> <<t itemName(item)>></a>
+<h4 id="<<t prefix + item.id>>"><a href="#<<t prefix + item.id>>">
+  <span class=kind><<t item.type>></span> <<t name>></a>
 </h4>
 
 <<if item.extends>><p>Extends <code><<type item.extends>></code>.</p><</if>>
@@ -11,7 +11,7 @@
 <dl>
 
 <<if item.constructor>>
-  <<define {item: item.constructor, name: itemName(item)}>>
+  <<define {item: item.constructor, name: name}>>
 <</if>>
 
 <<if item.properties>>

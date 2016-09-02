@@ -24,7 +24,7 @@
     "url": "https://github.com/marijnh/builddocs/issues"
   },
   "dependencies": {
-    "getdocs": "^1.0.0",
+    "getdocs": "^0.5.0",
     "glob": "^7.0.3",
     "markdown-it": "^6.0.5",
     "mold-template": "^2.0.0"
