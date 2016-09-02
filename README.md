@@ -17,11 +17,11 @@ object may have the following fields:
    strings, which may contain wildcards. These are the files that are
    scanned for doc comments.
 
- * **`order`**`: string` When given, this should be a space-separated
-   string of file names, which determines the order in which the given
-   files are read. You don't have to provide the full paths, only the
-   filename part (for example `foo` for `/a/b/foojs`). Any files not
-   mentioned here are left at the end of the set of files.
+ * **`main`**`: string` The path to the main template, which should be
+   a Markdown file with `@itemName` placeholders where the generated
+   docs for the documented items in the source should be inserted.
+   builddocs will complain when the set of item placeholders does not
+   match the set of documented items.
 
  * **`anchorPrefix`**`: ?string` Can be used to override the prefix
    used when generating HTML anchors. Defaults to the module name with
