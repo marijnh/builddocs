@@ -8,6 +8,8 @@
   fn<<fntype $in>>
 <<elif $in.type == "Array">>
   [<<for elt $in.typeParams || []>><<if $i>>, <</if>><<type elt>><</for>>]
+<<elif $in.type == "union">>
+  <<for elt $in.typeParams>><<if $i>> | <</if>><<type elt>><</for>>
 <<elif undocumentedProps>>
   {<<for name, prop in $in.properties>>
     <<if !hasDescription(prop)>><<if $i>>, <</if>><<t name>>: <<type prop>><</if>>
@@ -15,5 +17,5 @@
 <<else>>
   <<do var found = linkType($in)>>
   <<if found>><a href="<<t found>>"><<t $in.type>></a><<else>><<t $in.type>><</if>>
-  <<if $in.content>>&lt;<<for elt $in.content>><<if $i>>, <</if>><<type elt>><</for>>&gt;<</if>>
+  <<if $in.typeParams>>&lt;<<for elt $in.typeParams>><<if $i>>, <</if>><<type elt>><</for>>&gt;<</if>>
 <</if>>
