@@ -1,10 +1,10 @@
 <<in {item, name}>>
 
-<h4 id="<<t prefix + item.id>>"><a href="#<<t prefix + item.id>>">
-  <span class=kind><<t item.type>></span> <<t name>></a>
+<h4 id="<<t prefix + item.id>>">
+  <span class=kind><<t item.type>></span>
+  <a href="#<<t prefix + item.id>>"><<t name>></a>
+  <<if item.extends>> <span class=extends>extends <code><<type item.extends>></code></span><</if>>
 </h4>
-
-<<if item.extends>><p>Extends <code><<type item.extends>></code>.</p><</if>>
 
 <<markdown item.description>>
 
