@@ -1,6 +1,6 @@
 {
   "name": "builddocs",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "Build documentation files from getdocs-commented source code",
   "main": "src/builddocs.js",
   "repository": {
