@@ -99,5 +99,7 @@ module.exports = {
   FormData: "https://developer.mozilla.org/en-US/docs/Web/API/FormData",
   Selection: "https://developer.mozilla.org/en/docs/DOM/Selection",
   CanvasRenderingContext2D: "https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D",
-  Image: "https://developer.mozilla.org/en-US/docs/Web/API/HTMLImageElement/Image"
+  Image: "https://developer.mozilla.org/en-US/docs/Web/API/HTMLImageElement/Image",
+  MutationRecord: "https://developer.mozilla.org/en-US/docs/Web/API/MutationRecord",
+  MutationObserver: "https://developer.mozilla.org/en-US/docs/Web/API/MutationObserver"
 }
