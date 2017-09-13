@@ -3,7 +3,7 @@
   if ($in.properties) for (var n in $in.properties) if (!hasDescription($in.properties[n])) undocumentedProps = true
 >>
 
-<<if $in.optional>>?<</if>>
+<<if $in.optional>>?&#8288;<</if>>
 <<if $in.type == "Function">>
   <span class=fn>fn</span><<fntype $in>>
 <<elif $in.type == "Array">>
