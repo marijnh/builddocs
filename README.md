@@ -47,6 +47,9 @@ object may have the following fields:
  * **`env`**`: ?Object` A set of extra values to make available as
    global variables in the templates.
 
+ * **`markdownOptions`**`: ?Object` A set of options to pass through
+   to [markdown-it](https://github.com/markdown-it/markdown-it).
+
 The second parameter, `data`, can be used if the data for the module
 has already been read. By default, `build` will read it.
 

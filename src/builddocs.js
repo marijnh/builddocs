@@ -1,7 +1,5 @@
 var fs = require("fs")
 var Mold = require("mold-template")
-var markdown = (require("markdown-it")({html: true})).use(require("markdown-it-deflist"))
-
 var read = exports.read = require("./read").read
 var builtins = require("./builtins")
 
@@ -9,6 +7,10 @@ exports.browserImports = require("./browser")
 
 exports.build = function(config, data) {
   if (!data) data = read(config)
+
+  var mdOptions = {html: true}
+  if (config.markdownOptions) for (var prop in config.markdownOptions) mdOptions[prop] = config.markdownOptions[prop]
+  var markdown = require("markdown-it")(mdOptions).use(require("markdown-it-deflist"))
 
   var placed = Object.create(null)
   var doc = markdown.render(fs.readFileSync(config.main, "utf8").replace(/(^|\n)@(\w+)(?=$|\n)/g, function(_, before, name, after) {
@@ -20,7 +22,7 @@ exports.build = function(config, data) {
   for (var name in data.items) if (!placed[name])
     throw new Error("Item " + name + " is missing from the doc template")
 
-  var mold = loadTemplates(config, data)
+  var mold = loadTemplates(markdown, config, data)
 
   return doc.replace(/<div data-item="([^"]+)"><\/div>/g, function(_, name) {
     let item = data.items[name]
@@ -34,7 +36,7 @@ function prefix(config) {
   return prefix
 }
 
-function loadTemplates(config, data) {
+function loadTemplates(markdown, config, data) {
   var mold = new Mold(moldEnv(config, data))
   mold.defs.markdown = function(text) {
     if (!text) return ""
