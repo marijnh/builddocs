@@ -1,7 +1,7 @@
 (<<for param $in.params || []>>
   <<if $i>>, <</if>><<if param.rest>>...<</if>>
-  <<if param.name>><<t param.name>>: <</if>>
+  <<if param.name>><span class=param><<t param.name>>:</span> <</if>>
   <<type param>>
-  <<if param.default>> = <<t param.default>><</if>>
+  <<if param.default>> = <span class=defaultvalue><<t param.default>></span><</if>>
  <</for>>)
 <<if $in.returns>> → <<type $in.returns>><</if>>

@@ -5,7 +5,7 @@
 
 <<if $in.optional>>?<</if>>
 <<if $in.type == "Function">>
-  fn<<fntype $in>>
+  <span class=fn>fn</span><<fntype $in>>
 <<elif $in.type == "Array">>
   [<<for elt $in.typeParams || []>><<if $i>>, <</if>><<type elt>><</for>>]
 <<elif $in.type == "union">>
@@ -15,7 +15,10 @@
     <<if !hasDescription(prop)>><<if $i>>, <</if>><<t name>>: <<type prop>><</if>>
    <</for>>}
 <<else>>
-  <<do var found = linkType($in)>>
-  <<if found>><a href="<<t found>>"><<t $in.type>></a><<else>><<t $in.type>><</if>>
+  <<do var found = linkType($in)
+       var cls = /^"/.test($in.type) ? "string" : /(^|\.)[A-Z]\w+$/.test($in.type) ? "type" : "prim" >>
+  <<if found>><a href="<<t found>>"><</if>>
+    <span class="<<t cls>>"><<t $in.type>></span>
+  <<if found>></a><</if>>
   <<if $in.typeParams>>&lt;<<for elt $in.typeParams>><<if $i>>, <</if>><<type elt>><</for>>&gt;<</if>>
 <</if>>
