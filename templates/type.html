@@ -11,8 +11,9 @@
 <<elif $in.type == "union">>
   <<for elt $in.typeParams>><<if $i>> | <</if>><<type elt>><</for>>
 <<elif undocumentedProps>>
+  <<do var needComma = false>>
   {<<for name, prop in $in.properties>>
-    <<if !hasDescription(prop)>><<if $i>>, <</if>><<t name>>: <<type prop>><</if>>
+    <<if !hasDescription(prop)>><<if needComma>>, <</if>><span class=prop><<t name>>: </span><<type prop>><<do needComma = true>><</if>>
    <</for>>}
 <<else>>
   <<do var found = linkType($in)
