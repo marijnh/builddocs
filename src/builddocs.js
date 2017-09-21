@@ -8,26 +8,38 @@ exports.browserImports = require("./browser")
 exports.build = function(config, data) {
   if (!data) data = read(config)
 
-  var mdOptions = {html: true}
-  if (config.markdownOptions) for (var prop in config.markdownOptions) mdOptions[prop] = config.markdownOptions[prop]
-  var markdown = require("markdown-it")(mdOptions).use(require("markdown-it-deflist"))
+  let format = config.format || "html"
+  let renderItem =
+      format == "html" ? name => '<div data-item="' + name + '"></div>' :
+      format == "markdown" ? (() => {
+        let mold = loadMarkdownTemplates(config, data)
+        return name => mold.defs.item({item: data.items[name], name}).replace(/[\n␤]{2}$/g, "\n")
+      })()
+      : null
 
   var placed = Object.create(null)
-  var doc = markdown.render(fs.readFileSync(config.main, "utf8").replace(/(^|\n)@(\w+)(?=$|\n)/g, function(_, before, name, after) {
+  let main = fs.readFileSync(config.main, "utf8").replace(/(^|\n)@(\w+)(?=$|\n)/g, function(_, before, name) {
     if (placed[name]) throw new Error("Item " + name + " is included in doc template twice")
     if (!data.items[name]) throw new Error("Unknown item " + name + " included in doc template")
     placed[name] = true
-    return before + before + '<div data-item="' + name + '"></div>\n'
-  }))
+    return before + renderItem(name)
+  })
   for (var name in data.items) if (!placed[name])
     throw new Error("Item " + name + " is missing from the doc template")
 
-  var mold = loadTemplates(markdown, config, data)
+  if (format == "markdown") {
+    return main.replace(/␤/g, "\n")
+  } else if (format == "html") {
+    var mdOptions = {html: true}
+    if (config.markdownOptions) for (var prop in config.markdownOptions) mdOptions[prop] = config.markdownOptions[prop]
+    var markdown = require("markdown-it")(mdOptions).use(require("markdown-it-deflist"))
+    let mold = loadHTMLTemplates(markdown, config, data)
 
-  return doc.replace(/<div data-item="([^"]+)"><\/div>/g, function(_, name) {
-    let item = data.items[name]
-    return mold.defs.item({item: item, name: name})
-  })
+    let doc = markdown.render(main)
+    return doc.replace(/<div data-item="([^"]+)"><\/div>/g, function(_, name) {
+      return mold.defs.item({item: data.items[name], name})
+    })
+  }
 }
 
 function prefix(config) {
@@ -36,7 +48,15 @@ function prefix(config) {
   return prefix
 }
 
-function loadTemplates(markdown, config, data) {
+function templateDir(mold, dir, ext) {
+  fs.readdirSync(dir).forEach(function(filename) {
+    var match = /^(.*?)\.(\w+)$/.exec(filename)
+    if (match && match[2] == ext && !(match[1] in mold.defs))
+      mold.bake(match[1], fs.readFileSync(dir + "/" + filename, "utf8").trim())
+  })
+}
+
+function loadHTMLTemplates(markdown, config, data) {
   var mold = new Mold(moldEnv(config, data))
   mold.defs.markdown = function(text) {
     if (!text) return ""
@@ -46,16 +66,20 @@ function loadTemplates(markdown, config, data) {
     return mold.defs.markdown(fs.readFileSync(name + ".md", "utf8"))
   }
 
-  function templateDir(dir) {
-    fs.readdirSync(dir).forEach(function(filename) {
-      var match = /^(.*?)\.html$/.exec(filename)
-      if (match && !(match[1] in mold.defs))
-        mold.bake(match[1], fs.readFileSync(dir + "/" + match[1] + ".html", "utf8").trim())
-    })
-  }
+  if (config.templates) templateDir(mold, config.templates, "html")
+  templateDir(mold, __dirname + "/../templates", "html")
 
-  if (config.templates) templateDir(config.templates)
-  templateDir(__dirname + "/../templates")
+  return mold
+}
+
+function loadMarkdownTemplates(config, data) {
+  var mold = new Mold(moldEnv(config, data))
+
+  if (config.templates) templateDir(mold, config.templates, "md")
+  templateDir(mold, __dirname + "/../templates/markdown", "md")
+  mold.defs.indent = function({text, depth}) {
+    return text.trim().split("\n").map(line => /\S/.test(line) ? " ".repeat(depth) + line : "").join("\n")
+  }
 
   return mold
 }

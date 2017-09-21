@@ -8,7 +8,6 @@ exports.read = function(config) {
     return set.concat(glob.sync(pat))
   }, [])
   files.forEach(function(filename) {
-    last = null
     var file = fs.readFileSync(filename, "utf8")
     getdocs.gather(file, {filename: filename, items: items})
   })

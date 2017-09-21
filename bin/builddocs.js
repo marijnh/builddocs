@@ -2,10 +2,10 @@ var fs = require("fs")
 
 var build = require("../src/builddocs").build
 
-var name, main, templates, allowUnresolved = true, files = []
+var name, main, templates, allowUnresolved = true, files = [], format = "html"
 
 function help(status) {
-  console.log("Usage: builddocs --name <name> --main <main> [--templates <templatedir>]\n         [--disallow-unresolved] [--help] <sourcefiles>")
+  console.log("Usage: builddocs --name <name> --main <main> [--templates <templatedir>]\n         [--disallow-unresolved] [--help] [--format <format>] <sourcefiles>")
   process.exit(status)
 }
 
@@ -15,6 +15,7 @@ for (var i = 2; i < process.argv.length; i++) {
   else if (arg == "--main") main = process.argv[++i]
   else if (arg == "--templates") templates = process.argv[++i]
   else if (arg == "--disallow-unresolved") allowUnresolved = false
+  else if (arg == "--format") format = process.argv[++i]
   else if (arg.charAt(0) != "-") files.push(arg)
   else help(arg == "--help" ? 0 : 1)
 }
@@ -26,5 +27,6 @@ console.log(build({
   main: main,
   files: files.join(" "),
   templates: templates,
+  format,
   allowUnresolvedTypes: allowUnresolved
 }))
