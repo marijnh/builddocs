@@ -1,3 +1,4 @@
+#!/usr/bin/env node
 var fs = require("fs")
 
 var build = require("../src/builddocs").build

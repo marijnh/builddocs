@@ -20,6 +20,9 @@
     }
   ],
   "license": "MIT",
+  "bin": {
+    "builddocs": "./bin/builddocs.js"
+  },
   "bugs": {
     "url": "https://github.com/marijnh/builddocs/issues"
   },
