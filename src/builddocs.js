@@ -2,6 +2,7 @@ let fs = require("fs")
 let Mold = require("mold-template")
 let read = exports.read = require("./read").read
 let builtins = require("./builtins")
+let createTSDeclaration = require("./ts-declaration").createTSDeclaration
 
 exports.browserImports = require("./browser")
 
@@ -10,24 +11,29 @@ exports.build = function(config, data) {
 
   let format = config.format || "html"
   let renderItem =
+      format == "ts-declaration" ? name => createTSDeclaration(name, data.items[name]) :
       format == "html" ? name => '<div data-item="' + name + '"></div>' :
       format == "markdown" ? (() => {
         let mold = loadMarkdownTemplates(config, data)
         return name => mold.defs.item({item: data.items[name], name}).replace(/[\n␤]{2}$/g, "\n")
       })()
       : null
+  let items = []
 
   let placed = Object.create(null)
   let main = fs.readFileSync(config.main, "utf8").replace(/(^|\n)@(\w+)(?=$|\n)/g, function(_, before, name) {
     if (placed[name]) throw new Error("Item " + name + " is included in doc template twice")
     if (!data.items[name]) throw new Error("Unknown item " + name + " included in doc template")
     placed[name] = true
+    items.push(renderItem(name))
     return before + renderItem(name)
   })
   for (let name in data.items) if (!placed[name])
     throw new Error("Item " + name + " is missing from the doc template")
 
-  if (format == "markdown") {
+  if (format === "ts-declaration") {
+    return items.join('\n')
+  } else if (format == "markdown") {
     return main.replace(/␤/g, "\n")
   } else if (format == "html") {
     let mdOptions = {html: true}
