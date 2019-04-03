@@ -1,7 +1,7 @@
 <<in {item, name}>>
 
 <h4 id="<<t prefix + item.id>>">
-  <span class=kind><<t item.type>></span>
+  <span class=kind><<if item.abstract>>abstract <</if>><<t item.type>></span>
   <a href="#<<t prefix + item.id>>"><<t name>></a>
   <<if item.extends>> <span class=extends>extends <code><<type item.extends>></code></span><</if>>
 </h4>
