@@ -1,10 +1,9 @@
 <<in {item, name, static}>>
-
 <dt id="<<t prefix + item.id>>">
   <<if item.type == "Function" && !item.optional>>
-    <code><<if static>>static <</if>><<if /\.constructor$/.test(item.id)>>new <</if>><strong><a href="#<<t prefix + item.id>>"><<t name>></a></strong><<fntype item>></code>
+    <code><<if item.abstract>>abstract <</if>><<if static>>static <</if>><<if item.readonly>>readonly <</if>><<if /\.constructor$/.test(item.id)>>new <</if>><strong><a href="#<<t prefix + item.id>>"><<t name>></a></strong><<fntype item>></code>
   <<else>>
-    <code><<if static>>static <</if>><strong><a href="#<<t prefix + item.id>>"><<t name>></a></strong><<if item.type>>: <<type item>><</if>></code>
+    <code><<if item.abstract>>abstract <</if>><<if static>>static <</if>><<if item.readonly>>readonly <</if>><strong><a href="#<<t prefix + item.id>>"><<t name>></a></strong><<if item.type>>: <<type item>><</if>></code>
   <</if>>
 </dt>
 
