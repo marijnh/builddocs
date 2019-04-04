@@ -9,7 +9,7 @@
 
 <dd>
   <<markdown item.description>>
-  <<do inList = false>>
+  <<do let inList = false>>
   <<for name, prop in item.properties || {}>>
     <<if hasDescription(prop)>>
       <<if !inList>><dl><<do inList = true>><</if>>
