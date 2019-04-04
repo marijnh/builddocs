@@ -3,6 +3,7 @@
 <h4 id="<<t prefix + item.id>>">
   <span class=kind><<if item.abstract>>abstract <</if>><<t item.type>></span>
   <a href="#<<t prefix + item.id>>"><<t name>></a>
+  <<if item.typeParams>>&lt;<<for elt item.typeParams>><<if $i>>, <</if>><<type elt>><</for>>&gt;<</if>>
   <<if item.extends>> <span class=extends>extends <code><<type item.extends>></code></span><</if>>
   <<if item.implements>> <span class=implements>implements <code><<type item.implements>></code></span><</if>>
 </h4>
