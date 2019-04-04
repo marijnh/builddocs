@@ -1,3 +1,4 @@
+<<if $in.typeParams>>&lt;<<for elt $in.typeParams>><<if $i>>, <</if>><<type elt>><</for>>&gt;<</if>>
 (<<for param $in.params || []>>
   <<if $i>>, <</if>><<if param.rest>>...<</if>>
   <<if param.name>><span class=param><<t param.name>>:</span> <</if>>
