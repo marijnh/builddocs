@@ -16,7 +16,7 @@
     <<if !hasDescription(prop)>><<if needComma>>, <</if>><span class=prop><<t name>>: </span><<type prop>><<do needComma = true>><</if>>
    <</for>>}
 <<else>>
-  <<do var found = linkType($in)
+  <<do var found = !$in.typeParamUsage && !$in.literal && linkType($in)
        var cls = /^"/.test($in.type) ? "string" : /(^|\.)[A-Z]\w+$/.test($in.type) ? "type" : "prim" >>
   <<if found>><a href="<<t found>>"><</if>>
     <span class="<<t cls>>"><<t $in.type>></span>
