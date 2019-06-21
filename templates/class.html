@@ -12,7 +12,7 @@
 
 <dl>
 
-<<if item.constructor>>
+<<if Object.prototype.hasOwnProperty.call(item, "constructor")>>
   <<define {item: item.constructor, name: name}>>
 <</if>>
 
