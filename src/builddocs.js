@@ -51,7 +51,7 @@ function prefix(config) {
 function templateDir(mold, dir, ext) {
   fs.readdirSync(dir).forEach(function(filename) {
     let match = /^(.*?)\.(\w+)$/.exec(filename)
-    if (match && match[2] == ext && !(match[1] in mold.defs))
+    if (match && match[2] == ext && !has(mold.defs, match[1]))
       mold.bake(match[1], fs.readFileSync(dir + "/" + filename, "utf8").trim())
   })
 }
@@ -84,18 +84,22 @@ function loadMarkdownTemplates(config, data) {
   return mold
 }
 
+function has(obj, prop) {
+  return Object.prototype.hasOwnProperty.call(obj, prop)
+}
+
 function maybeLinkType(config, data, name) {
-  if (name in data.all) return "#" + prefix(config) + name
+  if (has(data.all, name) && data.all[name].type != "reexport") return "#" + prefix(config) + name
   if (name.charAt(0) == '"') return false
   let imports = config.imports, qualified = config.qualifiedImports
   if (imports) for (let i = 0; i < imports.length; i++) {
     let set = imports[i]
-    if (Object.prototype.hasOwnProperty.call(set, name))
+    if (has(set, name))
       return set[name]
   }
   if (qualified) for (let pref in qualified) if (name.indexOf(pref + ".") == 0) {
     let inner = name.slice(pref.length + 1)
-    if (Object.prototype.hasOwnProperty.call(qualified[pref], inner))
+    if (has(qualified[pref], inner))
       return qualified[pref][inner]
   }
   if (builtins.hasOwnProperty(name)) return builtins[name]
