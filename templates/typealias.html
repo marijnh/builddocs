@@ -7,4 +7,14 @@
   <<type item.value>>
 </dt>
 
-<<markdown item.description>>
+<dd>
+  <<markdown item.description>>
+  <<do let inList = false>>
+  <<for name, prop in item.value.properties || {}>>
+    <<if hasDescription(prop)>>
+      <<if !inList>><dl><<do inList = true>><</if>>
+      <<define {item: prop, name: name}>>
+    <</if>>
+  <</for>>
+  <<if inList>></dl><</if>>
+</dd>

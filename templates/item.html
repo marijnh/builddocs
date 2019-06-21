@@ -1,9 +1,7 @@
 <<if $in.item.type == "class" || $in.item.type == "interface">>
   <<class $in>>
+<<elif $in.item.type == "type">>
+  <<typealias $in>>
 <<else>>
-  <<if $in.item.type == "type">>
-    <<typealias $in>>
-  <<else>>
-    <<define $in>>
-  <</if>>
+  <<define $in>>
 <</if>>
