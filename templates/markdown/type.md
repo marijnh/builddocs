@@ -6,7 +6,11 @@
 <<if $in.type == "Function">>
   fn<<fntype $in>>
 <<elif $in.type == "Array">>
-  [<<for elt $in.typeParams || []>><<if $i>>, <</if>><<type elt>><</for>>]
+  <<if $in.typeParams.length == 1>>
+    <<type $in.typeParams[0]>>[]
+  <<else>>
+    [<<for elt $in.typeParams || []>><<if $i>>, <</if>><<type elt>><</for>>]
+  <</if>>
 <<elif $in.type == "union">>
   <<for elt $in.typeParams>><<if $i>> | <</if>><<type elt>><</for>>
 <<elif undocumentedProps>>
