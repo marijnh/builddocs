@@ -88,9 +88,13 @@ function has(obj, prop) {
   return Object.prototype.hasOwnProperty.call(obj, prop)
 }
 
+function isLiteral(type) {
+  return /^(\"|\'|-?\d)/.test(type)
+}
+
 function maybeLinkType(config, data, name) {
   if (has(data.all, name) && data.all[name].type != "reexport") return "#" + prefix(config) + name
-  if (name.charAt(0) == '"') return false
+  if (isLiteral(type)) return false
   let imports = config.imports, qualified = config.qualifiedImports
   if (imports) for (let i = 0; i < imports.length; i++) {
     let set = imports[i]
