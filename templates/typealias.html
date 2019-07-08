@@ -1,16 +1,18 @@
 <<in {item, name}>>
 
 <dt id="<<t prefix + item.id>>">
-  <span class=kind><<t item.type>></span>
-  <code><strong><a href="#<<t prefix + item.id>>"><<t name>></a></strong></code>
-  <<if item.typeParams>>&lt;<<for elt item.typeParams>><<if $i>>, <</if>><<type elt>><</for>>&gt;<</if>> = 
-  <<type item.value>>
+  <span class=kind>type</span>
+  <code>
+    <strong><a href="#<<t prefix + item.id>>"><<t name>></a></strong>
+    <<if item.typeParams>>&lt;<<for elt item.typeParams>><<if $i>>, <</if>><<typeparam elt>><</for>>&gt;<</if>> = 
+    <<type item>>
+  </code>
 </dt>
 
 <dd>
   <<markdown item.description>>
   <<do let inList = false>>
-  <<for name, prop in item.value.properties || {}>>
+  <<for name, prop in item.properties || {}>>
     <<if hasDescription(prop)>>
       <<if !inList>><dl><<do inList = true>><</if>>
       <<define {item: prop, name: name}>>

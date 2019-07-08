@@ -1,10 +1,12 @@
 <<in {item, name, static}>>
 <dt id="<<t prefix + item.id>>">
-  <<if item.type == "Function" && !item.optional>>
-    <code><<if item.abstract>>abstract <</if>><<if static>>static <</if>><<if item.readonly>>readonly <</if>><<if /\.constructor$/.test(item.id)>>new <</if>><strong><a href="#<<t prefix + item.id>>"><<t name>></a></strong><<fntype item>></code>
-  <<else>>
-    <code><<if item.abstract>>abstract <</if>><<if static>>static <</if>><<if item.readonly>>readonly <</if>><strong><a href="#<<t prefix + item.id>>"><<t name>></a></strong><<if item.type>>: <<type item>><</if>></code>
-  <</if>>
+  <code><<if item.abstract>>abstract <</if>><<if static>>static <</if>><<if item.readonly>>readonly <</if>>
+    <<if item.type == "Function" && !item.optional>>
+      <<if /\.constructor$/.test(item.id)>>new <</if>><strong><a href="#<<t prefix + item.id>>"><<t name>></a></strong><<fntype item>>
+    <<else>>
+      <strong><a href="#<<t prefix + item.id>>"><<t name>></a></strong><<if item.optional>>&#8288;?<</if>><<if item.type>>: <<type item>><</if>>
+    <</if>>
+  </code>
 </dt>
 
 <dd>
@@ -16,15 +18,11 @@
       <<define {item: prop, name: name}>>
     <</if>>
   <</for>>
-  <<for param item.params || []>>
+  <<for param (item.params || []).concat(item.typeParams || [])>>
     <<if hasDescription(param)>>
       <<if !inList>><dl><<do inList = true>><</if>>
       <<define {item: param, name: param.name}>>
     <</if>>
   <</for>>
-  <<if item.returns && hasDescription(item.returns)>>
-    <<if !inList>><dl><<do inList = true>><</if>>
-    <<define {item: item.returns, name: "returns"}>>
-  <</if>>
   <<if inList>></dl><</if>>
 </dd>

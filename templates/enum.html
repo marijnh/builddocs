@@ -1,0 +1,17 @@
+<<in {item, name}>>
+
+<dt>
+  <code>enum <strong><a href="#<<t prefix + item.id>>"><<t name>></a></strong></code>
+</dt>
+
+<dd>
+  <<markdown item.description>>
+  <dl>
+    <<for name, member in item.properties>>
+      <dt><code><strong><a href="#<<t prefix + item.id>>"><<t name>></a></strong></code></dt>
+      <<if member.description>>
+        <dd><<markdown member.description>></dd>
+      <</if>>
+    <</for>>
+  </dl>
+</dd>

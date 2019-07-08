@@ -2,5 +2,11 @@
 
 <dt>
   <span class=kind>re-export</span>
-  <code><strong><a href="<<t linkType(item.value)>>"><<t name>></a></strong></code>
+  <code><strong><a href="<<t linkType(item)>>"><<t name>></a></strong></code>
 </dt>
+
+<<if item.description>>
+  <dd>
+    <<markdown item.description>>
+  </dd>
+<</if>>

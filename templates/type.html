@@ -3,27 +3,31 @@
   if ($in.properties) for (var n in $in.properties) if (!hasDescription($in.properties[n])) undocumentedProps = true
 >>
 
-<<if $in.optional>>?&#8288;<</if>>
 <<if $in.type == "Function">>
   <span class=fn>fn</span><<fntype $in>>
 <<elif $in.type == "Array">>
-  <<if $in.typeParams.length == 1>>
-    <<type $in.typeParams[0]>>[]
-  <<else>>
-    [<<for elt $in.typeParams || []>><<if $i>>, <</if>><<type elt>><</for>>]
-  <</if>>
+  <<type $in.typeArgs[0]>>[]
+<<elif $in.type == "ReadonlyArray">>
+  readonly <<type $in.typeArgs[0]>>[]
+<<elif $in.type == "tuple">>
+  [<<for elt $in.typeArgs || []>><<if $i>>, <</if>><<type elt>><</for>>]
 <<elif $in.type == "union">>
-  <<for elt $in.typeParams>><<if $i>> | <</if>><<type elt>><</for>>
+  <<for elt $in.typeArgs>><<if $i>> | <</if>><<type elt>><</for>>
 <<elif undocumentedProps>>
   <<do var needComma = false>>
   {<<for name, prop in $in.properties>>
-    <<if !hasDescription(prop)>><<if needComma>>, <</if>><span class=prop><<t name>>: </span><<type prop>><<do needComma = true>><</if>>
+     <<if !hasDescription(prop)>>
+       <<if needComma>>, <</if>>
+       <<if prop.readonly>>readonly <</if>>
+       <span class=prop><<t name>><<if prop.optional>>&#8288;?<</if>>: </span><<type prop>>
+       <<do needComma = true>>
+     <</if>>
    <</for>>}
 <<else>>
-  <<do var found = !$in.typeParamUsage && !$in.literal && linkType($in)
+  <<do var found = linkType($in)
        var cls = /^"/.test($in.type) ? "string" : /(^|\.)[A-Z]\w+$/.test($in.type) ? "type" : "prim" >>
   <<if found>><a href="<<t found>>"><</if>>
     <span class="<<t cls>>"><<t $in.type>></span>
   <<if found>></a><</if>>
-  <<if $in.typeParams>>&lt;<<for elt $in.typeParams>><<if $i>>, <</if>><<type elt>><</for>>&gt;<</if>>
+  <<if $in.typeArgs>>&lt;<<for elt $in.typeArgs>><<if $i>>, <</if>><<type elt>><</for>>&gt;<</if>>
 <</if>>

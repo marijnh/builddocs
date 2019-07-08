@@ -1,8 +1,12 @@
-<<if $in.item.type == "class" || $in.item.type == "interface">>
+<<in {item}>>
+
+<<if item.kind == "class" || item.kind == "interface">>
   <<class $in>>
-<<elif $in.item.type == "type">>
+<<elif item.kind == "enum">>
+  <<enum $in>>
+<<elif item.kind == "typealias">>
   <<typealias $in>>
-<<elif $in.item.type == "reexport">>
+<<elif item.kind == "reexport">>
   <<reexport $in>>
 <<else>>
   <<define $in>>

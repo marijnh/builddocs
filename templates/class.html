@@ -3,25 +3,31 @@
 <h4 id="<<t prefix + item.id>>">
   <span class=kind><<if item.abstract>>abstract <</if>><<t item.type>></span>
   <a href="#<<t prefix + item.id>>"><<t name>></a>
-  <<if item.typeParams>>&lt;<<for elt item.typeParams>><<if $i>>, <</if>><<t elt.type>><</for>>&gt;<</if>>
+  <<if item.typeParams>><code>&lt;<<for elt item.typeParams>><<if $i>>, <</if>><<typeparam elt>><</for>>&gt;</code><</if>>
   <<if item.extends>> <span class=extends>extends <code><<type item.extends>></code></span><</if>>
-  <<if item.implements>> <span class=implements>implements <code><<type item.implements>></code></span><</if>>
+  <<for impl item.implements || []>> <span class=implements>implements <code><<type impl>></code></span><</for>>
 </h4>
 
 <<markdown item.description>>
 
 <dl>
 
-<<if Object.prototype.hasOwnProperty.call(item, "constructor")>>
-  <<define {item: item.constructor, name: name}>>
+<<for param item.typeParams || []>>
+  <<if hasDescription(param)>>
+    <<define {item: param, name: param.name}>>
+  <</if>>
+<</for>>
+
+<<if item.construct>>
+  <<define {item: item.construct, name: name}>>
 <</if>>
 
 <<if item.properties>>
-  <<for name, prop in item.properties>><<define {item: prop, name: name}>><</for>>
+  <<for name, prop in item.properties>><<define {item: prop, name: name, static: item.kind == "class"}>><</for>>
 <</if>>
 
-<<if item.staticProperties>>
-  <<for name, prop in item.staticProperties>><<define {item: prop, name: name, static: true}>><</for>>
+<<if item.instanceProperties>>
+  <<for name, prop in item.instanceProperties>><<define {item: prop, name: name}>><</for>>
 <</if>>
 
 </dl>

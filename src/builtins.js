@@ -15,6 +15,7 @@ module.exports = {
   Number: "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number",
   Iterator: "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Iteration_protocols",
   Array: "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array",
+  ReadonlyArray: "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array",
   Object: "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object",
   RegExp: "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/RegExp",
   Function: "https://developer.mozilla.org/en-US/docs/JavaScript/Reference/Global_Objects/Function",
@@ -47,5 +48,7 @@ module.exports = {
   class: false,
   interface: false,
   any: false,
-  union: false
+  union: false,
+  tuple: false,
+  typeparameter: false
 }

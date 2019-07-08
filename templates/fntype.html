@@ -1,8 +1,2 @@
-<<if $in.typeParams>>&lt;<<for elt $in.typeParams>><<if $i>>, <</if>><<t elt.type>><</for>>&gt;<</if>>
-(<<for param $in.params || []>>
-  <<if $i>>, <</if>><<if param.rest>>...<</if>>
-  <<if param.name>><span class=param><<t param.name>>:</span> <</if>>
-  <<type param>>
-  <<if param.default>><span class=defaultvalue> = <<t param.default>></span><</if>>
- <</for>>)
-<<if $in.returns>> → <<type $in.returns>><</if>>
+<<if $in.typeParams>>&lt;<<for elt $in.typeParams>><<if $i>>, <</if>><<typeparam elt>><</for>>&gt;<</if>>
+(<<for param $in.params || []>><<if $i>>, <</if>><<param param>><</for>>) <<if $in.returns>> → <<type $in.returns>><</if>>
