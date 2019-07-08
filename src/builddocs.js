@@ -115,7 +115,7 @@ function moldEnv(config, data) {
     linkType: function(type) {
       let link = maybeLinkType(config, data, type.type)
       if (!link && link !== false && !config.allowUnresolvedTypes)
-        throw new Error("Unknown type '" + type.type + "' at " + type.loc.file + ":" + type.loc.line)
+        throw new Error("Unknown type '" + type.type + "'" + (type.loc ? " at " + type.loc.file + ":" + type.loc.line : ""))
       return link
     },
     hasDescription: function(type) {
