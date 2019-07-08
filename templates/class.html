@@ -1,13 +1,16 @@
 <<in {item, name}>>
 
-<h4 id="<<t prefix + item.id>>">
-  <span class=kind><<if item.abstract>>abstract <</if>><<t item.type>></span>
-  <a href="#<<t prefix + item.id>>"><<t name>></a>
-  <<if item.typeParams>><code>&lt;<<for elt item.typeParams>><<if $i>>, <</if>><<typeparam elt>><</for>>&gt;</code><</if>>
-  <<if item.extends>> <span class=extends>extends <code><<type item.extends>></code></span><</if>>
-  <<for impl item.implements || []>> <span class=implements>implements <code><<type impl>></code></span><</for>>
-</h4>
+<dt id="<<t prefix + item.id>>">
+  <h4>
+    <span class=kind><<if item.abstract>>abstract <</if>><<t item.kind == "typealias" ? "type" : item.kind>></span>
+    <a href="#<<t prefix + item.id>>"><<t name>></a>
+    <<if item.typeParams>><code>&lt;<<for elt item.typeParams>><<if $i>>, <</if>><<typeparam elt>><</for>>&gt;</code><</if>>
+    <<if item.extends>> <span class=extends>extends <code><<type item.extends>></code></span><</if>>
+    <<for impl item.implements || []>> <span class=implements>implements <code><<type impl>></code></span><</for>>
+  </h4>
+</dt>
 
+<dd>
 <<markdown item.description>>
 
 <dl>
@@ -31,3 +34,5 @@
 <</if>>
 
 </dl>
+
+</dd>

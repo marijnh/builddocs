@@ -30,7 +30,9 @@ exports.build = function(config, items) {
       : null
 
   let placed = Object.create(null)
-  let main = fs.readFileSync(config.main, "utf8").replace(/(^|\n)@(\w+)(?=$|\n)/g, function(_, before, name) {
+  let main = fs.readFileSync(config.main, "utf8")
+  if (format == "html") main = main.replace(/(^|\n)(@\w+\n+)*@\w+(?=$|\n)/g, "<dl>\n$&\n</dl>")
+  main = main.replace(/(^|\n)@(\w+)(?=$|\n)/g, function(_, before, name) {
     if (placed[name]) throw new Error("Item " + name + " is included in doc template twice")
     if (!items[name]) throw new Error("Unknown item " + name + " included in doc template")
     placed[name] = true
@@ -107,7 +109,7 @@ function isLiteral(type) {
 function maybeLinkType(config, items, type) {
   let name = type.type
   if (type.typeParamSource) return "#" + prefix(config) + type.typeParamSource
-  if (has(items, name) && items[name].type != "reexport") return "#" + prefix(config) + name
+  if (has(items, name) && items[name].kind != "reexport") return "#" + prefix(config) + name
   if (isLiteral(name)) return false
   let imports = config.imports, qualified = config.qualifiedImports
   if (imports) for (let i = 0; i < imports.length; i++) {

@@ -1,2 +1,2 @@
 <<if $in.typeParams>>&lt;<<for elt $in.typeParams>><<if $i>>, <</if>><<typeparam elt>><</for>>&gt;<</if>>
-(<<for param $in.params || []>><<if $i>>, <</if>><<param param>><</for>>) <<if $in.returns>> → <<type $in.returns>><</if>>
+(<<for param $in.params || []>><<if $i>>, <</if>><<param param>><</for>>)<<if $in.returns>> → <<type $in.returns>><</if>>

@@ -1,4 +1,5 @@
 <<if $in.rest>>...<</if>>
-<<if $in.name>><a id="<<t prefix + $in.id>>" href="#<<t prefix + $in.id>>"><span class=param><<t $in.name>></span></a>: <</if>>
+<<if $in.name>><a id="<<t prefix + $in.id>>" href="#<<t prefix + $in.id>>"><span class=param><<t $in.name>></span></a>
+  <<if $in.optional>>&#8288;?<</if>>: <</if>>
 <<type $in>>
 <<if $in.default>><span class=defaultvalue> = <<t $in.default>></span><</if>>
