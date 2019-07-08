@@ -6,7 +6,7 @@ HTML.
 
 It exports the following values:
 
-**`build`**`: (config: Object, data: ?Object) → string`
+**`build`**`: (config: Object, items: ?Object) → string`
 
 Build the documentation for a given set of files. The configuration
 object may have the following fields:
@@ -28,7 +28,7 @@ object may have the following fields:
    a dot after it. You can set this to the empty string to disable
    anchor prefixes.
 
- * **`imports`**`: ?[Object]` A set of object mapping type names to
+ * **`imports`**`: ?[Object | (item: Object) → ?string]` A set of object mapping type names to
    URLs. Will make the library recognize the given type names and
    properly link them.
 
@@ -50,24 +50,19 @@ object may have the following fields:
  * **`markdownOptions`**`: ?Object` A set of options to pass through
    to [markdown-it](https://github.com/markdown-it/markdown-it).
 
-The second parameter, `data`, can be used if the data for the module
-has already been read. By default, `build` will read it.
+The second parameter, `items`, can be used if the JSON data for the
+module has already been read. By default, `build` will read it using
+[`getdocs`](https://github.com/marijnh/getdocs).
 
 **`read`**`: (config: Object) → Object`
 
-Read comments from a given set of files. `config` has the same shape
-as the argument to `build` (though only `files` and `order` will be
-read by this function).
+Read types and comments from a given set of files. `config` has the
+same shape as the argument to `build` (though only `files` and `order`
+will be read by this function).
 
-The returned object has the following properties:
-
- * **`items`**`: Object` The data returned by
-   [getdocs](https://github.com/marijnh/getdocs).
-
- * **`pieces`**`: [Object]` An ordered array of getdocs items and
-   `!!`-prefixed comments that were found in the code.
-
- * **`all`**`: Object` A mapping from getdocs ids to getdocs items.
+The function returns the data returned by
+[getdocs](https://github.com/marijnh/getdocs), an object containing
+metadata for each of the items documented in the source files.
 
 **`browserImports`**`: Object<string>`
 
