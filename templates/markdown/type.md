@@ -13,6 +13,8 @@
   <</if>>
 <<elif $in.type == "union">>
   <<for elt $in.typeParams>><<if $i>> | <</if>><<type elt>><</for>>
+<<elif $in.type == "intersection">>
+  <<for elt $in.typeParams>><<if $i>> & <</if>><<type elt>><</for>>
 <<elif undocumentedProps>>
   <<do var needComma = false>>
   {<<for name, prop in $in.properties>>
