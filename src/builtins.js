@@ -50,5 +50,6 @@ module.exports = {
   any: false,
   union: false,
   tuple: false,
-  typeparameter: false
+  typeparameter: false,
+  intersection: false
 }
