@@ -15,6 +15,12 @@
   <<for elt $in.typeArgs>><<if $i>> | <</if>><<type elt>><</for>>
 <<elif $in.type == "intersection">>
   <<for elt $in.typeArgs>><<if $i>> & <</if>><<type elt>><</for>>
+<<elif $in.type == "indexed">>
+  <<for elt $in.typeArgs>><<if $i>>[<</if>><<type elt>><<if $i>>]<</if>><</for>>
+<<elif $in.type == "keyof">>
+  keyof <<type $in.typeArgs[0]>>
+<<elif $in.type == "typeof">>
+  typeof <<type $in.typeArgs[0]>>
 <<elif undocumentedProps>>
   <<do var needComma = false>>
   {<<for name, prop in $in.properties>>
