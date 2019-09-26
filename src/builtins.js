@@ -61,8 +61,10 @@ module.exports = {
   class: false,
   interface: false,
   any: false,
+  never: false,
   union: false,
   tuple: false,
   typeparameter: false,
-  intersection: false
+  intersection: false,
+  conditional: false
 }

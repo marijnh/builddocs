@@ -3,6 +3,8 @@ module.exports = {
   Element: "https://developer.mozilla.org/en/docs/DOM/Element",
   Text: "https://developer.mozilla.org/en/docs/DOM/Text",
   Document: "https://developer.mozilla.org/en/docs/DOM/document",
+  ShadowRoot: "https://developer.mozilla.org/en-US/docs/Web/API/ShadowRoot",
+  DocumentOrShadowRoot: "https://developer.mozilla.org/en-US/docs/Web/API/DocumentOrShadowRoot",
   XMLDocument: "https://developer.mozilla.org/en/docs/Parsing_and_serializing_XML",
   HTMLElement: "https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement",
   HTMLAnchorElement: "https://developer.mozilla.org/en-US/docs/Web/API/HTMLAnchorElement",
