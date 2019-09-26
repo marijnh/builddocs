@@ -7,6 +7,9 @@
       <strong><a href="#<<t prefix + item.id>>"><<t name>></a></strong><<if item.optional>>&#8288;?<</if>><<if item.type>>: <<type item>><</if>>
     <</if>>
   </code>
+  <<for sig item.overloaded || []>>
+    <div><code><strong><a href="#<<t prefix + item.id>>"><<t name>></a></strong><<fntype sig>></code></div>
+  <</for>>
 </dt>
 
 <dd>
