@@ -30,7 +30,7 @@ exports.build = function(config, items) {
       : null
 
   let placed = Object.create(null)
-  let main = fs.readFileSync(config.main, "utf8")
+  let main = config.main ? fs.readFileSync(config.main, "utf8") : Object.keys(items).map(name => "@" + name).join("\n\n")
   if (format == "html") main = main.replace(/(^|\n)(@\w+\n+)*@\w+(?=$|\n)/g, "<dl>\n$&\n</dl>")
   main = main.replace(/(^|\n)@(\w+)(?=$|\n)/g, function(_, before, name) {
     if (placed[name]) throw new Error("Item " + name + " is included in doc template twice")

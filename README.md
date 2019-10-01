@@ -17,11 +17,12 @@ object may have the following fields:
    strings, which may contain wildcards. These are the files that are
    scanned for doc comments.
 
- * **`main`**`: string` The path to the main template, which should be
-   a Markdown file with `@itemName` placeholders where the generated
-   docs for the documented items in the source should be inserted.
-   builddocs will complain when the set of item placeholders does not
-   match the set of documented items.
+ * **`main`**`: ?string` The path to the main template, which should
+   be a Markdown file with `@itemName` placeholders where the
+   generated docs for the documented items in the source should be
+   inserted. builddocs will complain when the set of item placeholders
+   does not match the set of documented items. When not given, the
+   items will be output in the order in which they are found.
 
  * **`anchorPrefix`**`: ?string` Can be used to override the prefix
    used when generating HTML anchors. Defaults to the module name with
