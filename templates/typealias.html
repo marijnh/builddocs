@@ -3,9 +3,7 @@
 <dt id="<<t prefix + item.id>>">
   <span class=kind>type</span>
   <code>
-    <strong><a href="#<<t prefix + item.id>>"><<t name>></a></strong>
-    <<if item.typeParams>>&lt;<<for elt item.typeParams>><<if $i>>, <</if>><<typeparam elt>><</for>>&gt;<</if>> = 
-    <<type item>>
+    <strong><a href="#<<t prefix + item.id>>"><<t name>></a></strong><<typeparams item.typeParams>> = <<type item>>
   </code>
 </dt>
 
