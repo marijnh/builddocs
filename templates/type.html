@@ -17,6 +17,8 @@
   <<for elt $in.typeArgs>><<if $i>> & <</if>><<type elt>><</for>>
 <<elif $in.type == "indexed">>
   <<for elt $in.typeArgs>><<if $i>>[<</if>><<type elt>><<if $i>>]<</if>><</for>>
+<<elif $in.type == "conditional">>
+  (<<typeparam $in.typeParams[0]>> ? <<type $in.typeArgs[0]>> : <<type $in.typeArgs[1]>>)
 <<elif $in.type == "keyof">>
   keyof <<type $in.typeArgs[0]>>
 <<elif $in.type == "typeof">>
