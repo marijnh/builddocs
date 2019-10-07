@@ -66,5 +66,6 @@ module.exports = {
   tuple: false,
   typeparameter: false,
   intersection: false,
-  conditional: false
+  conditional: false,
+  mapped: false
 }
