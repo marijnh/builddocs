@@ -1,0 +1,5 @@
+<<do
+  var need = $in.type == "union" || $in.type == "intersection" || $in.type == "conditional"
+>>
+
+<<t need ? "(" : "">><<type $in>><<t need ? ")" : "">>
