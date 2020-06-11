@@ -1,10 +1,10 @@
-<<in {item, name, static}>>
+<<in {item, name, static, hideType}>>
 <dt id="<<t prefix + item.id>>">
   <code><<if item.abstract>>abstract <</if>><<if static>>static <</if>><<if item.readonly>>readonly <</if>>
     <<if item.type == "Function" && !item.optional>>
       <<if /\.constructor$/.test(item.id)>>new <</if>><strong><a href="#<<t prefix + item.id>>"><<t name>></a></strong><<fntype item>>
     <<else>>
-      <strong><a href="#<<t prefix + item.id>>"><<t name>></a></strong><<if item.optional>>&#8288;?<</if>><<if item.type>>: <<type item>><</if>>
+      <strong><a href="#<<t prefix + item.id>>"><<t name>></a></strong><<if item.optional && !hideType>>&#8288;?<</if>><<if item.type && !hideType>>: <<type item>><</if>>
     <</if>>
   </code>
   <<for sig item.overloaded || []>>
@@ -24,7 +24,7 @@
   <<for param (item.params || []).concat(item.typeParams || [])>>
     <<if hasDescription(param)>>
       <<if !inList>><dl><<do inList = true>><</if>>
-      <<define {item: param, name: param.name}>>
+      <<define {item: param, name: param.name, hideType: true}>>
     <</if>>
   <</for>>
   <<if inList>></dl><</if>>
