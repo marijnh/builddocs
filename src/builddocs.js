@@ -29,17 +29,29 @@ exports.build = function(config, items) {
       })()
       : null
 
-  let placed = Object.create(null)
-  let main = config.main ? fs.readFileSync(config.main, "utf8") : Object.keys(items).map(name => "@" + name).join("\n\n")
-  if (format == "html") main = main.replace(/(^|\n)(@\w+\n+)*@\w+(?=$|\n)/g, "<dl>\n$&\n</dl>")
-  main = main.replace(/(^|\n)@(\w+)(?=$|\n)/g, function(_, before, name) {
-    if (placed[name]) throw new Error("Item " + name + " is included in doc template twice")
-    if (!items[name]) throw new Error("Unknown item " + name + " included in doc template")
-    placed[name] = true
-    return before + renderItem(name)
-  })
-  for (let name in items) if (!placed[name])
-    throw new Error("Item " + name + " is missing from the doc template")
+  let instantiateTemplate = template => {
+    if (format == "html") template = template.replace(/(^|\n)(@\w+\n+)*@\w+(?=$|\n)/g, "<dl>\n$&\n</dl>")
+    let placed = Object.create(null), problems = []
+    let result = template.replace(/(^|\n)@(\w+)(?=$|\n)/g, function(_, before, name) {
+      if (placed[name]) problems.push("Item " + name + " is included in doc template twice")
+      if (!items[name]) problems.push("Unknown item " + name + " included in doc template")
+      placed[name] = true
+      return before + renderItem(name)
+    })
+    for (let name in items) if (!placed[name])
+      problems.push("Item " + name + " is missing from the doc template")
+    return {result, problems}
+  }
+
+  let main
+  if (config.main) {
+    let {problems, result} = instantiateTemplate(fs.readFileSync(config.main, "utf8"))
+    if (problems.length)
+      for (let prob of problems) console.log(prob)
+    else
+      main = result
+  }
+  if (!main) main = instantiateTemplate(Object.keys(items).map(name => "@" + name).join("\n\n")).result
 
   if (format == "markdown") {
     return main.replace(/␤/g, "\n")
