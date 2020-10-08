@@ -31,7 +31,6 @@
   {<<for name, prop in $in.properties>>
      <<if !hasDescription(prop)>>
        <<if needComma>>, <</if>>
-       <<if prop.readonly>>readonly <</if>>
        <span class=prop><<t name>><<if prop.optional>>&#8288;?<</if>>: </span><<type prop>>
        <<do needComma = true>>
      <</if>>

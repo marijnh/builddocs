@@ -1,6 +1,6 @@
 <<in {item, name, static, hideType}>>
 <dt id="<<t prefix + item.id>>">
-  <code><<if item.abstract>>abstract <</if>><<if static>>static <</if>><<if item.readonly>>readonly <</if>>
+  <code><<if item.abstract>>abstract <</if>><<if static>>static <</if>>
     <<if item.type == "Function" && !item.optional>>
       <<if /\.constructor$/.test(item.id)>>new <</if>><strong><a href="#<<t prefix + item.id>>"><<t name>></a></strong><<fntype item>>
     <<else>>
