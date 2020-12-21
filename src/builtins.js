@@ -59,7 +59,6 @@ module.exports = {
   Required: "https://www.typescriptlang.org/docs/handbook/utility-types.html#requiredt",
   ReturnType: "https://www.typescriptlang.org/docs/handbook/utility-types.html#returntypet",
   ThisType: "https://www.typescriptlang.org/docs/handbook/utility-types.html#thistypet",
-  HTMLElementEventMap: false,
   class: false,
   interface: false,
   any: false,

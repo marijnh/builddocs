@@ -8,7 +8,7 @@
 <<elif $in.type == "Array">>
   <<typeParens $in.typeArgs[0]>>[]
 <<elif $in.type == "ReadonlyArray">>
-  readonly <<typeParens $in.typeArgs[0]>>[]
+  readonly <<typeParens $in.typeArgs[0]>>[]
 <<elif $in.type == "tuple">>
   [<<for elt $in.typeArgs || []>><<if $i>>, <</if>><<type elt>><</for>>]
 <<elif $in.type == "union">>
@@ -18,14 +18,14 @@
 <<elif $in.type == "indexed">>
   <<for elt $in.typeArgs>><<if $i>>[<</if>><<type elt>><<if $i>>]<</if>><</for>>
 <<elif $in.type == "conditional">>
-  <<type $in.typeArgs[0]>> extends <<type $in.typeArgs[1]>> ? <<type $in.typeArgs[2]>> : <<type $in.typeArgs[3]>>
+  <<type $in.typeArgs[0]>> extends <<type $in.typeArgs[1]>> ? <<type $in.typeArgs[2]>> : <<type $in.typeArgs[3]>>
 <<elif $in.type == "mapped">>
-  {[<a id="<<t prefix + $in.key.id>>" href="#<<t prefix + $in.key.id>>"><<t $in.key.name>></a> in <<type $in.key.implements[0]>>]: 
-  <<type $in.typeArgs[0]>>
+  {[<a id="<<t prefix + $in.key.id>>" href="#<<t prefix + $in.key.id>>"><<t $in.key.name>></a> in <<type $in.key.implements[0]>>]: 
+  <<type $in.typeArgs[0]>>}
 <<elif $in.type == "keyof">>
-  keyof <<typeParens $in.typeArgs[0]>>
+  keyof <<typeParens $in.typeArgs[0]>>
 <<elif $in.type == "typeof">>
-  typeof <<typeParens $in.typeArgs[0]>>
+  typeof <<typeParens $in.typeArgs[0]>>
 <<elif undocumentedProps>>
   <<do var needComma = false>>
   {<<for name, prop in $in.properties>>

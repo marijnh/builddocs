@@ -103,5 +103,6 @@ module.exports = {
   CanvasRenderingContext2D: "https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D",
   Image: "https://developer.mozilla.org/en-US/docs/Web/API/HTMLImageElement/Image",
   MutationRecord: "https://developer.mozilla.org/en-US/docs/Web/API/MutationRecord",
-  MutationObserver: "https://developer.mozilla.org/en-US/docs/Web/API/MutationObserver"
+  MutationObserver: "https://developer.mozilla.org/en-US/docs/Web/API/MutationObserver",
+  HTMLElementEventMap: "https://microsoft.github.io/PowerBI-JavaScript/interfaces/_node_modules_typedoc_node_modules_typescript_lib_lib_dom_d_.htmlelementeventmap.html"
 }
