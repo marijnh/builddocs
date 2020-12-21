@@ -1,1 +1,11 @@
-<<if $in>>&lt;<<for elt $in>><<if $i>>, <</if>><<typeparam elt>><</for>>&gt;<</if>>
+<<if $in>>
+  <<do let mustBreak = breakType($in)>>
+  &lt;
+  <<for elt $in>>
+    <<if mustBreak>><div class=breaktype><</if>>
+    <<typeparam elt>>
+    <<if $i != $in.length - 1>>, <</if>>
+    <<if mustBreak>></div><</if>>
+  <</for>>
+  &gt;
+<</if>>

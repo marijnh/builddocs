@@ -51,6 +51,11 @@ object may have the following fields:
  * **`markdownOptions`**`: ?Object` A set of options to pass through
    to [markdown-it](https://github.com/markdown-it/markdown-it).
 
+ * **`breakAtComplexity`**`: ?number` When given, type or property
+   lists of a given complexity (the number of types it involves), it
+   will be wrapped in a `<div class=breaktype>` element (which can be
+   styled with a left padding to indent it).
+
 The second parameter, `items`, can be used if the JSON data for the
 module has already been read. By default, `build` will read it using
 [`getdocs`](https://github.com/marijnh/getdocs).

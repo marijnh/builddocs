@@ -158,8 +158,24 @@ function moldEnv(config, items) {
         if (env.hasDescription(type.params[i])) return true
       if (type.returns && type.returns.description) return true
       return false
+    },
+    breakType: function c(type) {
+      return config.breakAtComplexity != null && typeComplexity(type) >= config.breakAtComplexity
     }
   }
   if (config.env) for (let prop in config.env) env[prop] = config.env[prop]
   return env
+}
+
+function typeComplexity(type) {
+  if (!type) return 0
+  if (Array.isArray(type)) return type.reduce((compl, t) => compl + typeComplexity(t), 0)
+  return (/^(union|intersection|tuple|indexed|conditional|mapped|Array|Function)$/.test(type.type) ? 0 : 1) +
+    typeComplexity(type.params) +
+    typeComplexity(type.typeArgs) +
+    typeComplexity(type.properties) +
+    typeComplexity(type.returns) +
+    typeComplexity(type.implements) +
+    typeComplexity(type.extends) +
+    typeComplexity(type.default)
 }

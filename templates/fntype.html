@@ -1,1 +1,9 @@
-<<typeparams $in.typeParams>>(<<for param $in.params || []>><<if $i>>, <</if>><<param param>><</for>>)<<if $in.returns>> → <<type $in.returns>><</if>>
+<<do let mustBreak = breakType($in.params)>>
+<<typeparams $in.typeParams>>
+(<<for param $in.params || []>>
+  <<if mustBreak>><div class=breaktype><</if>>
+  <<param param>>
+  <<if $i != $in.params.length - 1>>, <</if>>
+  <<if mustBreak>></div><</if>>
+<</for>>)
+<<if $in.returns>> → <<type $in.returns>><</if>>

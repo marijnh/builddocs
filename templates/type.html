@@ -1,6 +1,9 @@
 <<do
-  var undocumentedProps = false
-  if ($in.properties) for (var n in $in.properties) if (!hasDescription($in.properties[n])) undocumentedProps = true
+  var undocumentedProps = null
+  if ($in.properties) for (var n in $in.properties) {
+    var p = $in.properties[n]
+    if (!hasDescription(p)) (undocumentedProps || (undocumentedProps = [])).push([n, p])
+  }
 >>
 
 <<if $in.type == "Function">>
@@ -27,19 +30,26 @@
 <<elif $in.type == "typeof">>
   typeof <<typeParens $in.typeArgs[0]>>
 <<elif undocumentedProps>>
-  <<do var needComma = false>>
-  {<<for name, prop in $in.properties>>
-     <<if !hasDescription(prop)>>
-       <<if needComma>>, <</if>>
-       <span class=prop><<t name>><<if prop.optional>>&#8288;?<</if>>: </span><<type prop>>
-       <<do needComma = true>>
-     <</if>>
-   <</for>>}
+  <<do mustBreak = breakType(undocumentedProps)>>
+  {<<for prop undocumentedProps>>
+     <<if mustBreak>><div class=breaktype><</if>>
+     <span class=prop><<t prop[0]>><<if prop[1].optional>>&#8288;?<</if>>: </span><<type prop[1]>>
+     <<if $i < undocumentedProps.length - 1>>,<</if>>
+     <<if mustBreak>></div><</if>>
+  <</for>>}
 <<else>>
   <<do var found = linkType($in)
        var cls = /^"/.test($in.type) ? "string" : /(^|\.)[A-Z]\w+$/.test($in.type) ? "type" : "prim" >>
   <<if found>><a href="<<t found>>"><</if>>
     <span class="<<t cls>>"><<t $in.type>></span>
   <<if found>></a><</if>>
-  <<if $in.typeArgs>>&lt;<<for elt $in.typeArgs>><<if $i>>, <</if>><<type elt>><</for>>&gt;<</if>>
+  <<if $in.typeArgs>>
+    <<do let mustBreak = breakType($in.typeArgs)>>
+    &lt;<<for elt $in.typeArgs>>
+      <<if mustBreak>><div class=breaktype><</if>>
+      <<type elt>>
+      <<if $i != $in.typeArgs.length - 1>>, <</if>>
+      <<if mustBreak>></div><</if>>
+    <</for>>&gt;
+  <</if>>
 <</if>>
