@@ -1,4 +1,5 @@
 <<do
+  $in = processType($in)
   var undocumentedProps = null
   if ($in.properties) for (var n in $in.properties) {
     var p = $in.properties[n]

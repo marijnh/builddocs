@@ -159,8 +159,11 @@ function moldEnv(config, items) {
       if (type.returns && type.returns.description) return true
       return false
     },
-    breakType: function c(type) {
+    breakType: function(type) {
       return config.breakAtComplexity != null && typeComplexity(type) >= config.breakAtComplexity
+    },
+    processType: function(type) {
+      return (config.processType && config.processType(type)) || type
     }
   }
   if (config.env) for (let prop in config.env) env[prop] = config.env[prop]

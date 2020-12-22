@@ -56,6 +56,10 @@ object may have the following fields:
    will be wrapped in a `<div class=breaktype>` element (which can be
    styled with a left padding to indent it).
 
+ * **`processType`**`: ?(type: Type) => ?Type` When given, types will
+   be passed through this function before being formatted. It can
+   return a replacement JSON structure for the type.
+
 The second parameter, `items`, can be used if the JSON data for the
 module has already been read. By default, `build` will read it using
 [`getdocs`](https://github.com/marijnh/getdocs).
