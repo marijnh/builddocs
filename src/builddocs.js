@@ -160,7 +160,7 @@ function moldEnv(config, items) {
       return false
     },
     breakType: function(type) {
-      return config.breakAtComplexity != null && typeComplexity(type) >= config.breakAtComplexity
+      return config.breakAt != null && typeLen(type) >= config.breakAt
     },
     processType: function(type) {
       return (config.processType && config.processType(type)) || type
@@ -170,17 +170,32 @@ function moldEnv(config, items) {
   return env
 }
 
-function typeComplexity(type) {
+const typeLenMap = {
+  union: 1,
+  intersection: 1,
+  tuple: 2,
+  Array: 2,
+  ReadonlyArray: 11,
+  indexed: 2,
+  conditional: 6,
+  mapped: 10,
+  Function: 4
+}
+
+// Estimate the length of a type
+function typeLen(type, extra = 0) {
   if (!type) return 0
-  if (Array.isArray(type)) return type.reduce((compl, t) => compl + typeComplexity(t), 0)
-  let comp = (/^(union|intersection|tuple|indexed|conditional|mapped|Array|Function)$/.test(type.type) ? 0 : 1) +
-    (/^(parameter|property)$/.test(type.kind) ? 1 : 0) +
-    typeComplexity(type.params) +
-    typeComplexity(type.typeArgs) +
-    typeComplexity(type.returns) +
-    typeComplexity(type.implements) +
-    typeComplexity(type.extends) +
-    typeComplexity(type.default)
-  if (type.properties) for (let p of Object.values(type.properties)) if (!p.description) comp += typeComplexity(p)
-  return comp
+  if (Array.isArray(type)) return type.reduce((compl, t, i) => compl + typeLen(t) + (i ? 2 : 0), extra)
+  let val = extra + (typeLenMap.hasOwnProperty(type.type) ? typeLenMap[type.type] : type.type.length)
+  if (type.kind == "parameter") val += (type.name?.length || 0) + 2
+  val += typeLen(type.params) +
+    typeLen(type.typeArgs, 2) +
+    typeLen(type.returns, 3) +
+    typeLen(type.implements) +
+    (type.default ? type.default.length + 3 : 0)
+  if (type.properties) for (let name in type.properties) {
+    let prop = type.properties[name]
+    if (!prop.description) val += name.length + 2 + typeLen(prop)
+  }
+  return val
 }

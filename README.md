@@ -51,9 +51,9 @@ object may have the following fields:
  * **`markdownOptions`**`: ?Object` A set of options to pass through
    to [markdown-it](https://github.com/markdown-it/markdown-it).
 
- * **`breakAtComplexity`**`: ?number` When given, type or property
-   lists of a given complexity (the number of types it involves), it
-   will be wrapped in a `<div class=breaktype>` element (which can be
+ * **`breakAt`**`: ?number` When given, type or property lists whose
+   (estimated) length is equal to or greater than the given value will
+   be wrapped in a `<div class=breaktype>` element (which can be
    styled with a left padding to indent it).
 
  * **`processType`**`: ?(type: Type) => ?Type` When given, types will
