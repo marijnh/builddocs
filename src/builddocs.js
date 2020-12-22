@@ -173,12 +173,14 @@ function moldEnv(config, items) {
 function typeComplexity(type) {
   if (!type) return 0
   if (Array.isArray(type)) return type.reduce((compl, t) => compl + typeComplexity(t), 0)
-  return (/^(union|intersection|tuple|indexed|conditional|mapped|Array|Function)$/.test(type.type) ? 0 : 1) +
+  let comp = (/^(union|intersection|tuple|indexed|conditional|mapped|Array|Function)$/.test(type.type) ? 0 : 1) +
+    (/^(parameter|property)$/.test(type.kind) ? 1 : 0) +
     typeComplexity(type.params) +
     typeComplexity(type.typeArgs) +
-    typeComplexity(type.properties) +
     typeComplexity(type.returns) +
     typeComplexity(type.implements) +
     typeComplexity(type.extends) +
     typeComplexity(type.default)
+  if (type.properties) for (let p of Object.values(type.properties)) if (!p.description) comp += typeComplexity(p)
+  return comp
 }
