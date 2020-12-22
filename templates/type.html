@@ -11,7 +11,7 @@
 <<elif $in.type == "Array">>
   <<typeParens $in.typeArgs[0]>>[]
 <<elif $in.type == "ReadonlyArray">>
-  readonly <<typeParens $in.typeArgs[0]>>[]
+  <span class=keyword>readonly</span> <<typeParens $in.typeArgs[0]>>[]
 <<elif $in.type == "tuple">>
   [<<for elt $in.typeArgs || []>><<if $i>>, <</if>><<type elt>><</for>>]
 <<elif $in.type == "union">>
@@ -21,7 +21,7 @@
 <<elif $in.type == "indexed">>
   <<for elt $in.typeArgs>><<if $i>>[<</if>><<type elt>><<if $i>>]<</if>><</for>>
 <<elif $in.type == "conditional">>
-  <<type $in.typeArgs[0]>> extends <<type $in.typeArgs[1]>> ? <<type $in.typeArgs[2]>> : <<type $in.typeArgs[3]>>
+  <<type $in.typeArgs[0]>> <span class=keyword>extends</span> <<type $in.typeArgs[1]>> ? <<type $in.typeArgs[2]>> : <<type $in.typeArgs[3]>>
 <<elif $in.type == "mapped">>
   <<do mustBreak = breakType([$in.key.implements[0], $in.typeArgs[0]])>>
   {<<if mustBreak>><div class=breaktype><</if>>
@@ -30,15 +30,15 @@
   <<type $in.typeArgs[0]>>
   <<if mustBreak>></div><</if>>}
 <<elif $in.type == "keyof">>
-  keyof <<typeParens $in.typeArgs[0]>>
+  <span class=keyword>keyof</span> <<typeParens $in.typeArgs[0]>>
 <<elif $in.type == "typeof">>
-  typeof <<typeParens $in.typeArgs[0]>>
+  <span class=keyword>typeof</span> <<typeParens $in.typeArgs[0]>>
 <<elif undocumentedProps>>
-  <<do mustBreak = breakType(undocumentedProps)>>
+  <<do mustBreak = breakType(undocumentedProps.map(p => p[1]))>>
   {<<for prop undocumentedProps>>
      <<if mustBreak>><div class=breaktype><</if>>
-     <span class=prop><<t prop[0]>><<if prop[1].optional>>&#8288;?<</if>>: </span><<type prop[1]>>
-     <<if $i < undocumentedProps.length - 1>>,<</if>>
+     <span class=prop><<t prop[0]>></span><<if prop[1].optional>>&#8288;?<</if>>: <<type prop[1]>>
+     <<if $i < undocumentedProps.length - 1>>, <</if>>
      <<if mustBreak>></div><</if>>
   <</for>>}
 <<else>>
