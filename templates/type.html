@@ -23,8 +23,12 @@
 <<elif $in.type == "conditional">>
   <<type $in.typeArgs[0]>> extends <<type $in.typeArgs[1]>> ? <<type $in.typeArgs[2]>> : <<type $in.typeArgs[3]>>
 <<elif $in.type == "mapped">>
-  {[<a id="<<t prefix + $in.key.id>>" href="#<<t prefix + $in.key.id>>"><<t $in.key.name>></a> in <<type $in.key.implements[0]>>]: 
-  <<type $in.typeArgs[0]>>}
+  <<do mustBreak = breakType([$in.key.implements[0], $in.typeArgs[0]])>>
+  {<<if mustBreak>><div class=breaktype><</if>>
+  [<a id="<<t prefix + $in.key.id>>" href="#<<t prefix + $in.key.id>>">
+  <<t $in.key.name>></a> in <<type $in.key.implements[0]>>]: 
+  <<type $in.typeArgs[0]>>
+  <<if mustBreak>></div><</if>>}
 <<elif $in.type == "keyof">>
   keyof <<typeParens $in.typeArgs[0]>>
 <<elif $in.type == "typeof">>
