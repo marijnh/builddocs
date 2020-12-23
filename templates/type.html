@@ -50,7 +50,7 @@
   <</for>>}
 <<else>>
   <<do var found = linkType($in)
-       var cls = /^"/.test($in.type) ? "string" : /(^|\.)[A-Z]\w+$/.test($in.type) ? "type" : "prim" >>
+       var cls = /^"/.test($in.type) ? "string" : /^(number|string|boolean|symbol|null|undefined)$/.test($in.type) ? "prim" : "type" >>
   <<if found>><a href="<<t found>>"><</if>>
     <span class="<<t cls>>"><<t $in.type == "interface" ? "Object" : $in.type>></span>
   <<if found>></a><</if>>
