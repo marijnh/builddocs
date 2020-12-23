@@ -8,7 +8,7 @@
 >>
 
 <<if $in.type == "Function">>
-  <span class=fn>fn</span><<fntype $in>>
+  <span class=fn>fn</span><<fntype $in.signatures[0]>>
 <<elif $in.type == "Array">>
   <<typeParens $in.typeArgs[0]>>[]
 <<elif $in.type == "ReadonlyArray">>
@@ -34,9 +34,15 @@
   <span class=keyword>keyof</span> <<typeParens $in.typeArgs[0]>>
 <<elif $in.type == "typeof">>
   <span class=keyword>typeof</span> <<typeParens $in.typeArgs[0]>>
-<<elif undocumentedProps>>
-  <<do mustBreak = breakType(undocumentedProps.map(p => p[1]))>>
-  {<<for prop undocumentedProps>>
+<<elif undocumentedProps || $in.signatures>>
+  <<do mustBreak = breakType((undocumentedProps || []).map(p => p[1]).concat($in.signatures ? $in.signatures[0].params : []))>>
+  {<<if $in.signatures>>
+     <<if mustBreak>><div class=breaktype><</if>>
+     <<if $in.signatures[0].type == "constructor">><span class=keyword>new</span> <</if>><<fntype $in.signatures[0]>>
+     <<if undocumentedProps>>, <</if>>
+     <<if mustBreak>></div><</if>>
+   <</if>>
+   <<for prop undocumentedProps || []>>
      <<if mustBreak>><div class=breaktype><</if>>
      <span class=prop><<t prop[0]>></span><<if prop[1].optional>>&#8288;?<</if>>: <<type prop[1]>>
      <<if $i < undocumentedProps.length - 1>>, <</if>>
@@ -46,7 +52,7 @@
   <<do var found = linkType($in)
        var cls = /^"/.test($in.type) ? "string" : /(^|\.)[A-Z]\w+$/.test($in.type) ? "type" : "prim" >>
   <<if found>><a href="<<t found>>"><</if>>
-    <span class="<<t cls>>"><<t $in.type>></span>
+    <span class="<<t cls>>"><<t $in.type == "interface" ? "Object" : $in.type>></span>
   <<if found>></a><</if>>
   <<if $in.typeArgs>>
     <<do let mustBreak = breakType($in.typeArgs)>>

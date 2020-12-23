@@ -1,3 +1,3 @@
 <a id="<<t prefix + $in.id>>" href="#<<t prefix + $in.id>>"><<t $in.name>></a>
-<<if $in.implements>> extends<<for parent $in.implements>> <<type parent>><</for>><</if>>
+<<if $in.implements>> <span class=keyword>extends</span><<for parent $in.implements>> <<type parent>><</for>><</if>>
 <<if $in.default>> = <<t $in.default>><</if>>

@@ -188,11 +188,13 @@ function typeLen(type, extra = 0) {
   if (Array.isArray(type)) return type.reduce((compl, t, i) => compl + typeLen(t) + (i ? 2 : 0), extra)
   let val = extra + (typeLenMap.hasOwnProperty(type.type) ? typeLenMap[type.type] : type.type.length)
   if (type.kind == "parameter") val += (type.name?.length || 0) + 2
-  val += typeLen(type.params) +
-    typeLen(type.typeArgs, 2) +
-    typeLen(type.returns, 3) +
-    typeLen(type.implements) +
-    (type.default ? type.default.length + 3 : 0)
+  val += typeLen(type.implements) +
+    (type.default ? type.default.length + 3 : 0) +
+    typeLen(type.typeArgs, 2)
+  if (type.signatures) {
+    let sig = type.signatures[0]
+    val += typeLen(sig.params) + typeLen(sig.typeArgs, 2) + typeLen(sig.returns, 3)
+  }
   if (type.properties) for (let name in type.properties) {
     let prop = type.properties[name]
     if (!prop.description) val += name.length + 2 + typeLen(prop)

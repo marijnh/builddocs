@@ -1,14 +1,14 @@
 <<in {item, name, static, hideType}>>
 <dt id="<<t prefix + item.id>>">
-  <code><<if item.abstract>>abstract <</if>><<if static>>static <</if>>
+  <code><<if item.abstract>><span class=keyword>abstract</span> <</if>><<if static>><span class=keyword>static</span> <</if>>
     <<if item.type == "Function" && !item.optional>>
-      <<if /\.constructor$/.test(item.id)>>new <</if>><strong><a href="#<<t prefix + item.id>>"><<t name>></a></strong><<fntype item>>
+      <<if item.signatures[0].type == "constructor">><span class=keyword>new</span> <</if>><strong><a href="#<<t prefix + item.id>>"><<t name>></a></strong><<fntype item.signatures[0]>>
     <<else>>
       <strong><a href="#<<t prefix + item.id>>"><<t name>></a></strong><<if item.optional && !hideType>>&#8288;?<</if>><<if item.type && !hideType>>: <<type item>><</if>>
     <</if>>
   </code>
-  <<for sig item.overloaded || []>>
-    <div><code><strong><a href="#<<t prefix + item.id>>"><<t name>></a></strong><<fntype sig>></code></div>
+  <<for sig item.signatures?.slice(1) || []>>
+    <div><code><<if sig.type == "constructor">><span class=keyword>new</span> <</if>><strong><a href="#<<t prefix + item.id>>"><<t name>></a></strong><<fntype sig>></code></div>
   <</for>>
 </dt>
 
@@ -21,11 +21,13 @@
       <<define {item: prop, name: name}>>
     <</if>>
   <</for>>
-  <<for param (item.params || []).concat(item.typeParams || [])>>
-    <<if hasDescription(param)>>
-      <<if !inList>><dl><<do inList = true>><</if>>
-      <<define {item: param, name: param.name, hideType: true}>>
-    <</if>>
+  <<for params (item.signatures || []).map(s => s.params.concat(item.typeParams || [])).concat([item.typeParams || []])>>
+    <<for param params>>
+      <<if hasDescription(param)>>
+        <<if !inList>><dl><<do inList = true>><</if>>
+        <<define {item: param, name: param.name, hideType: true}>>
+      <</if>>
+    <</for>>
   <</for>>
   <<if inList>></dl><</if>>
 </dd>
