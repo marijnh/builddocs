@@ -62,6 +62,7 @@ module.exports = {
   class: false,
   interface: false,
   any: false,
+  unknown: false,
   never: false,
   union: false,
   tuple: false,

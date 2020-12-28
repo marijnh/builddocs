@@ -1,3 +1,4 @@
+<<typeparams $in>>
 (<<for param $in.params || []>>
   <<if $i>>, <</if>><<if param.rest>>...<</if>>
   <<if param.name>><<h param.name>>: <</if>>
