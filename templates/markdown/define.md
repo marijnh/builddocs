@@ -7,7 +7,7 @@
      **`<<h name>>`**<<if item.type>>`: <<type item>>`<</if>>
    <</if>>
    <<for sig item.signatures?.slice(1) || []>>
-     \␤<<if sig.type == "constructor">>`new `<</if>>**`<<h name>>`**`<<fntype sig>>`
+     \␤<<h " ".repeat(depth + 3)>><<if sig.type == "constructor">>`new `<</if>>**`<<h name>>`**`<<fntype sig>>`
    <</for>>
    <<if item.description>>\␤<<indent {text: item.description, depth: depth + 3}>><</if>>␤␤
    <<for name, prop in item.properties || {}>>
