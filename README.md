@@ -24,6 +24,8 @@ object may have the following fields:
    does not match the set of documented items. When not given, the
    items will be output in the order in which they are found.
 
+ * **`mainText`**`: ?string` The main template as a string.
+
  * **`anchorPrefix`**`: ?string` Can be used to override the prefix
    used when generating HTML anchors. Defaults to the module name with
    a dot after it. You can set this to the empty string to disable

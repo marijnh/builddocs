@@ -44,8 +44,8 @@ exports.build = function(config, items) {
   }
 
   let main
-  if (config.main) {
-    let {problems, result} = instantiateTemplate(fs.readFileSync(config.main, "utf8"))
+  if (config.main || config.mainText) {
+    let {problems, result} = instantiateTemplate(config.mainText || fs.readFileSync(config.main, "utf8"))
     if (problems.length)
       for (let prob of problems) console.log(prob)
     else
