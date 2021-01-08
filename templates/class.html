@@ -2,12 +2,12 @@
 
 <dt id="<<t prefix + item.id>>">
   <h4>
-    <span class=kind><<if item.abstract>><span class=keyword>abstract</span> <</if>><<t item.kind == "typealias" ? "type" : item.kind>></span>
+    <code><span class=keyword><<if item.abstract>><span class=keyword>abstract</span> <</if>><<t item.kind == "typealias" ? "type" : item.kind>></span></code>
     <a href="#<<t prefix + item.id>>"><<t name>></a>
     <<if item.typeParams>><code><<typeparams item.typeParams>></code><</if>>
-    <<if item.extends>> <span class=extends><span class=keyword>extends</span> <code><<type item.extends>></code></span><</if>>
+    <<if item.extends>> <code><span class=keyword>extends</span> <<type item.extends>></code><</if>>
     <<for impl item.implements || []
-      >> <span class=implements><span class=keyword><<t item.kind == "interface" ? "extends" : "implements">></span> <code><<type impl>></code></span>
+      >> <code><span class=keyword><<t item.kind == "interface" ? "extends" : "implements">></span> <<type impl>></code>
     <</for>>
   </h4>
 </dt>
