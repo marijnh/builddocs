@@ -13,7 +13,7 @@ object may have the following fields:
 
  * **`name`**`: string` The name of this module.
 
- * **`filename`**`: string` It `items` isn't given, this should point
+ * **`filename`**`: string` If `items` isn't given, this should point
    at the main filename to extract docs from.
 
  * **`main`**`: ?string` The path to the main template, which should
