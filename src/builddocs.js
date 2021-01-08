@@ -1,24 +1,11 @@
 let fs = require("fs")
 let Mold = require("mold-template")
 let builtins = require("./builtins")
-let glob = require("glob")
-
-const read = exports.read = function(config) {
-  let items = Object.create(null)
-  let files = config.files.split(" ").reduce(function(set, pat) {
-    return set.concat(glob.sync(pat))
-  }, [])
-  files.forEach(function(filename) {
-    let file = fs.readFileSync(filename, "utf8")
-    require("getdocs").gather(file, {filename, items})
-  })
-  return items
-}
 
 exports.browserImports = require("./browser")
 
 exports.build = function(config, items) {
-  if (!items) items = read(config)
+  if (!items) items = require("getdocs-ts").gather(config)
 
   let format = config.format || "html"
   let renderItem =
@@ -70,7 +57,7 @@ exports.build = function(config, items) {
 
 function prefix(config) {
   let prefix = config.anchorPrefix
-  if (prefix == null) prefix = config.name + "."
+  if (prefix == null) prefix = config.name ? config.name + "." : ""
   return prefix
 }
 

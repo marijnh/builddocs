@@ -1,8 +1,8 @@
 # builddocs
 
 This is a utility that transforms code documented with
-[getdocs](https://github.com/marijnh/getdocs)-style doc comments into
-HTML.
+[getdocs](https://github.com/marijnh/getdocs-ts)-style doc comments
+into HTML.
 
 It exports the following values:
 
@@ -13,9 +13,8 @@ object may have the following fields:
 
  * **`name`**`: string` The name of this module.
 
- * **`files`**`: string` Should be a space-separated set of path
-   strings, which may contain wildcards. These are the files that are
-   scanned for doc comments.
+ * **`filename`**`: string` It `items` isn't given, this should point
+   at the main filename to extract docs from.
 
  * **`main`**`: ?string` The path to the main template, which should
    be a Markdown file with `@itemName` placeholders where the
@@ -64,7 +63,7 @@ object may have the following fields:
 
 The second parameter, `items`, can be used if the JSON data for the
 module has already been read. By default, `build` will read it using
-[`getdocs`](https://github.com/marijnh/getdocs).
+[`getdocs-ts`](https://github.com/marijnh/getdocs-ts).
 
 **`read`**`: (config: Object) → Object`
 
@@ -73,7 +72,7 @@ same shape as the argument to `build` (though only `files` and `order`
 will be read by this function).
 
 The function returns the data returned by
-[getdocs](https://github.com/marijnh/getdocs), an object containing
+[getdocs-ts](https://github.com/marijnh/getdocs-ts), an object containing
 metadata for each of the items documented in the source files.
 
 **`browserImports`**`: Object<string>`
