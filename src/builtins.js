@@ -20,6 +20,7 @@ module.exports = {
   Object: "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object",
   RegExp: "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/RegExp",
   RegExpMatchArray: "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/match#Return_value",
+  RegExpExecArray: "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/match#Return_value",
   Function: "https://developer.mozilla.org/en-US/docs/JavaScript/Reference/Global_Objects/Function",
   Date: "https://developer.mozilla.org/en-US/docs/JavaScript/Reference/Global_Objects/Date",
   Error: "https://developer.mozilla.org/en-US/docs/JavaScript/Reference/Global_Objects/Error",
