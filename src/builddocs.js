@@ -46,6 +46,7 @@ exports.build = function(config, items) {
     let mdOptions = {html: true}
     if (config.markdownOptions) for (let prop in config.markdownOptions) mdOptions[prop] = config.markdownOptions[prop]
     let markdown = require("markdown-it")(mdOptions).use(require("markdown-it-deflist"))
+    if (config.extendMarkdown) markdown = config.extendMarkdown(markdown)
     let mold = loadHTMLTemplates(markdown, config, items)
 
     let doc = markdown.render(main)

@@ -52,6 +52,10 @@ object may have the following fields:
  * **`markdownOptions`**`: ?Object` A set of options to pass through
    to [markdown-it](https://github.com/markdown-it/markdown-it).
 
+ * **`extendMarkdown`**`: ?(md: MarkdownIt) → MarkdownIt` A function
+   that adds extensions to the [markdown-it](https://github.com/markdown-it/markdown-it)
+   instance used to render the content.
+
  * **`breakAt`**`: ?number` When given, type or property lists whose
    (estimated) length is equal to or greater than the given value will
    be wrapped in a `<div class=breaktype>` element (which can be
