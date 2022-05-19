@@ -7,7 +7,6 @@
   }
 >>
 
-<<if $in.optional>>?<</if>>
 <<if $in.type == "Function">>
   fn<<fntype $in.signatures[0]>>
 <<elif $in.type == "Array">>

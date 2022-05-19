@@ -4,5 +4,5 @@
     <<t tp.name>>
     <<if tp.implements>> extends<<for parent tp.implements>> <<type parent>><</for>><</if>>
     <<if tp.default>> = <<t tp.default>><</if>>
-  <</for>>
+  <</for>>>
 <</if>>

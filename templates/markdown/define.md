@@ -4,7 +4,7 @@
    <<if item.type == "Function" && !item.optional>>
      <<if item.signatures[0].type == "constructor">>`new `<</if>>**`<<h name>>`**`<<fntype item.signatures[0]>>`
    <<else>>
-     **`<<h name>>`**<<if item.type>>`: <<type item>>`<</if>>
+     **`<<h name>>`**`<<if item.optional>>?<</if>><<if item.type>>: <<type item>><</if>>`
    <</if>>
    <<for sig item.signatures?.slice(1) || []>>
      \␤<<h " ".repeat(depth + 3)>><<if sig.type == "constructor">>`new `<</if>>**`<<h name>>`**`<<fntype sig>>`
@@ -15,11 +15,15 @@
        <<define {item: prop, name: name, depth: depth + 3}>>
     <</if>>
   <</for>>
-  <<for param item.params || []>>
-    <<if hasDescription(param)>>
-      <<define {item: param, name: param.name, depth: depth + 3}>>
+  <<for params (item.signatures || []).map(s => s.params.concat(item.typeParams || [])).concat([item.typeParams || []])>>
+    <<for param params>>
+      <<if hasDescription(param)>>
+         <<define {item: param, name: param.name, depth: depth + 3}>>
+      <</if>>
+    <</for>>
+  <</for>>
+  <<for sig (item.signatures || [])>>
+    <<if sig.returns && hasDescription(sig.returns)>>
+      <<define {item: sig.returns, name: "returns", depth: depth + 3}>>
     <</if>>
   <</for>>
-  <<if item.returns && hasDescription(item.returns)>>
-    <<define {item: item.returns, name: "returns", depth: depth + 3}>>
-  <</if>>
