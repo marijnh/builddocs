@@ -89,6 +89,7 @@ module.exports = {
   ErrorEvent: "https://developer.mozilla.org/en/docs/DOM/DOM_event_reference/error",
   CustomEvent: "https://developer.mozilla.org/en/docs/DOM/Event/CustomEvent",
   BeforeLoadEvent: "https://developer.mozilla.org/en/docs/DOM/window",
+  ClipboardEvent: "https://developer.mozilla.org/en-US/docs/Web/API/ClipboardEvent",
   WebSocket: "https://developer.mozilla.org/en/docs/WebSockets",
   Worker: "https://developer.mozilla.org/en/docs/DOM/Worker",
   FileList: "https://developer.mozilla.org/en/docs/DOM/FileList",
