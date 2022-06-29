@@ -15,10 +15,15 @@
   <span class=keyword>readonly</span> <<typeParens $in.typeArgs[0]>>[]
 <<elif $in.type == "tuple">>
   [<<for elt $in.typeArgs || []>><<if $i>>, <</if>><<type elt>><</for>>]
-<<elif $in.type == "union">>
-  <<for elt $in.typeArgs>><<if $i>> | <</if>><<type elt>><</for>>
-<<elif $in.type == "intersection">>
-  <<for elt $in.typeArgs>><<if $i>> & <</if>><<type elt>><</for>>
+<<elif $in.type == "union" || $in.type == "intersection">>
+  <<do let op = $in.type == "union" ? "|" : "&", mustBreak = breakType($in.typeArgs)>>
+  <<for elt $in.typeArgs>>
+    <<if $i>> <<t op>> <</if>>
+    <<if $i > 1 && mustBreak>></div><</if>>
+    <<if $i && mustBreak>><div class=breaktype><</if>>
+    <<type elt>>
+  <</for>>
+  <<if $in.typeArgs.length > 1 && mustBreak>></div><</if>>
 <<elif $in.type == "indexed">>
   <<for elt $in.typeArgs>><<if $i>>[<</if>><<type elt>><<if $i>>]<</if>><</for>>
 <<elif $in.type == "conditional">>
