@@ -84,6 +84,7 @@ module.exports = {
   TouchEvent: "https://developer.mozilla.org/en/docs/DOM/Touch_events",
   WheelEvent: "https://developer.mozilla.org/en/docs/DOM/WheelEvent",
   MouseEvent: "https://developer.mozilla.org/en/docs/DOM/MouseEvent",
+  DragEvent: "https://developer.mozilla.org/en-US/docs/Web/API/DragEvent",
   KeyboardEvent: "https://developer.mozilla.org/en/docs/DOM/KeyboardEvent",
   HashChangeEvent: "https://developer.mozilla.org/en/docs/DOM/window.onhashchange",
   ErrorEvent: "https://developer.mozilla.org/en/docs/DOM/DOM_event_reference/error",
