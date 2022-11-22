@@ -17,9 +17,9 @@ exports.build = function(config, items) {
       : null
 
   let instantiateTemplate = template => {
-    if (format == "html") template = template.replace(/(^|\n)(@\w+\n+)*@\w+(?=$|\n)/g, "<dl>\n$&\n</dl>")
+    if (format == "html") template = template.replace(/(^|\n)(@[\w\$]+\n+)*@[\w\$]+(?=$|\n)/g, "<dl>\n$&\n</dl>")
     let placed = Object.create(null), problems = []
-    let result = template.replace(/(^|\n)@(\w+)(?=$|\n)/g, function(_, before, name) {
+    let result = template.replace(/(^|\n)@([\w\$]+)(?=$|\n)/g, function(_, before, name) {
       if (placed[name]) problems.push("Item " + name + " is included in doc template twice")
       if (!items[name]) problems.push("Unknown item " + name + " included in doc template")
       placed[name] = true
