@@ -1,3 +1,5 @@
+**This repository has moved to https://code.haverbeke.berlin/marijn/builddocs**
+
 # builddocs
 
 This is a utility that transforms code documented with
